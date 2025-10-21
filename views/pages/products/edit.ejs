@@ -12,7 +12,7 @@ const layout = 'layouts/main';
                 </div>
 
                 <div class="form-container">
-                    <form action="/products/<%= product._id %>/edit" method="POST" class="product-form">
+                    <form action="/products/<%= product._id %>/edit?_method=PUT" method="POST" class="product-form">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="name" class="form-label">Ürün Adı *</label>

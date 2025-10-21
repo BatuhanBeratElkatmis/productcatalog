@@ -92,6 +92,10 @@ const helpers = require('../../utils/helpers');
                             <a href="/products/${product._id}/edit" class="btn btn-primary">
                                 Ürünü Düzenle
                             </a>
+                            <!-- GÜNCELLENMİŞ SİLME FORMU -->
+                            <form action="/products/${product._id}/delete?_method=DELETE" method="POST" class="delete-form">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Bu ürünü silmek istediğinizden emin misiniz?')">Ürünü Sil</button>
+                            </form>
                         </div>
                     </div>
                 </div>

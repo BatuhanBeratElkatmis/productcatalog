@@ -87,8 +87,9 @@ const helpers = require('../../utils/helpers');
                                                 >
                                                     Ürünleri Gör
                                                 </a>
+                                                <!-- GÜNCELLENMİŞ SİLME FORMU -->
                                                 <form 
-                                                    action="/categories/<%= category._id %>/delete" 
+                                                    action="/categories/<%= category._id %>/delete?_method=DELETE" 
                                                     method="POST" 
                                                     class="delete-form"
                                                     onsubmit="return confirm('Bu kategoriyi silmek istediğinizden emin misiniz?')"

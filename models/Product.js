@@ -188,6 +188,17 @@ const Product = {
     } catch (error) {
       throw new Error(`Kategori sayıları getirilirken hata: ${error.message}`);
     }
+  },
+
+  // MARKALARI GETİR - YENİ EKLENEN METHOD
+  getBrands: async () => {
+    try {
+      const collection = getCollection('products');
+      const brands = await collection.distinct('brand');
+      return brands.filter(brand => brand && brand.trim() !== '');
+    } catch (error) {
+      throw new Error(`Markalar getirilirken hata: ${error.message}`);
+    }
   }
 };
 
