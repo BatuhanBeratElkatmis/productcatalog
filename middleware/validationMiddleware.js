@@ -1,5 +1,9 @@
+// Veritabanı modellerini içe aktar
+const Category = require('../models/Category');
+const Product = require('../models/Product');
+
 // Ürün validasyon middleware'i
-const validateProduct = (req, res, next) => {
+const validateProduct = async (req, res, next) => {
   const { name, price, category, stock } = req.body;
   const errors = [];
 
@@ -41,20 +45,34 @@ const validateProduct = (req, res, next) => {
 
   // Hata varsa
   if (errors.length > 0) {
-    return res.status(400).render(`pages/products/${req.method === 'POST' ? 'new' : 'edit'}`, {
-      title: req.method === 'POST' ? 'Yeni Ürün Ekle' : 'Ürünü Düzenle',
-      product: req.body,
-      categories: require('../models/Category').getAll(),
-      constants: require('../config/constants').APP_CONSTANTS,
-      errors
-    });
+    try {
+      // Kategorileri getir (formu tekrar render etmek için)
+      const categories = await Category.getAll();
+
+      const viewName = req.method === 'POST' ? 'new' : 'edit';
+      const title = req.method === 'POST' ? 'Yeni Ürün Ekle' : 'Ürünü Düzenle';
+
+      return res.status(400).render(`pages/products/${viewName}`, {
+        title,
+        product: req.body,
+        categories,
+        constants: require('../config/constants').APP_CONSTANTS,
+        errors
+      });
+    } catch (error) {
+      console.error('Validasyon middleware hatası:', error);
+      return res.status(500).render('pages/error', {
+        title: 'Hata',
+        message: 'Validasyon sırasında bir hata oluştu.'
+      });
+    }
   }
 
   next();
 };
 
 // Kategori validasyon middleware'i
-const validateCategory = (req, res, next) => {
+const validateCategory = async (req, res, next) => {
   const { name } = req.body;
   const errors = [];
 
@@ -69,12 +87,33 @@ const validateCategory = (req, res, next) => {
 
   // Hata varsa
   if (errors.length > 0) {
-    return res.status(400).render('pages/categories/list', {
-      title: 'Kategoriler',
-      categories: require('../models/Category').getAll(),
-      constants: require('../config/constants').APP_CONSTANTS,
-      errors
-    });
+    try {
+      const categories = await Category.getAll();
+      
+      // Her kategori için ürün sayısını getir
+      const categoriesWithCounts = await Promise.all(
+        categories.map(async (category) => {
+          const productCount = await Category.getProductCount(category._id);
+          return {
+            ...category,
+            productCount
+          };
+        })
+      );
+
+      return res.status(400).render('pages/categories/list', {
+        title: 'Kategoriler',
+        categories: categoriesWithCounts,
+        constants: require('../config/constants').APP_CONSTANTS,
+        errors
+      });
+    } catch (error) {
+      console.error('Kategori validasyon middleware hatası:', error);
+      return res.status(500).render('pages/error', {
+        title: 'Hata',
+        message: 'Validasyon sırasında bir hata oluştu.'
+      });
+    }
   }
 
   next();

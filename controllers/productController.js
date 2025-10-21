@@ -45,7 +45,7 @@ const productController = {
       // Kategorileri getir (filtreleme için)
       const categories = await Category.getAll();
 
-      // Markaları getir (filtreleme için)
+      // MARKALARI GETİR - YENİ EKLENDİ
       const brands = await Product.getBrands();
 
       res.render('pages/products/list', {
@@ -53,7 +53,7 @@ const productController = {
         products: result.products,
         pagination: result.pagination,
         categories,
-        brands,
+        brands, // Markaları view'a geçir
         filters,
         sortOptions: SORT_OPTIONS,
         currentSort: sort,
@@ -85,12 +85,18 @@ const productController = {
 
       const result = await Product.getAll(filters, {}, pagination);
 
+      // MARKALARI GETİR - YENİ EKLENDİ
+      const brands = await Product.getBrands();
+      const categories = await Category.getAll();
+
       res.render('pages/products/list', {
         title: `"${searchQuery}" Arama Sonuçları`,
         products: result.products,
         pagination: result.pagination,
         searchQuery,
         filters,
+        brands, // Markaları view'a geçir
+        categories,
         constants: APP_CONSTANTS
       });
     } catch (error) {
@@ -159,6 +165,16 @@ const productController = {
     try {
       const productData = req.body;
 
+      // Görsel URL'lerini array'e çevir
+      if (productData.images) {
+        productData.images = productData.images.split('\n').map(url => url.trim()).filter(url => url);
+      }
+
+      // Özellikleri array'e çevir
+      if (productData.features) {
+        productData.features = productData.features.split('\n').map(feature => feature.trim()).filter(feature => feature);
+      }
+
       // Basit validasyon
       if (!productData.name || !productData.price) {
         const categories = await Category.getAll();
@@ -222,6 +238,16 @@ const productController = {
     try {
       const { id } = req.params;
       const updateData = req.body;
+
+      // Görsel URL'lerini array'e çevir
+      if (updateData.images) {
+        updateData.images = updateData.images.split('\n').map(url => url.trim()).filter(url => url);
+      }
+
+      // Özellikleri array'e çevir
+      if (updateData.features) {
+        updateData.features = updateData.features.split('\n').map(feature => feature.trim()).filter(feature => feature);
+      }
 
       // Basit validasyon
       if (!updateData.name || !updateData.price) {

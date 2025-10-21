@@ -85,16 +85,17 @@
         </div>
     </div>
 
-    <% if (brands && brands.length > 0) { %>
+    <!-- BRANDS FİLTRESİ - GÜNCELLENDİ: brands değişkeni artık mevcut -->
+    <% if (typeof brands !== 'undefined' && brands.length > 0) { %>
     <div class="filter-group">
         <h4 class="filter-group-title">Marka</h4>
         <div class="filter-options">
-            <% brands.forEach(function(brand) { %>
+            <% brands.forEach(function(brandItem) { %>
                 <a 
-                    href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, brand: brand }, 1) %>" 
-                    class="filter-option <%= filters.brand === brand ? 'active' : '' %>"
+                    href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, brand: brandItem }, 1) %>" 
+                    class="filter-option <%= filters.brand === brandItem ? 'active' : '' %>"
                 >
-                    <%= brand %>
+                    <%= brandItem %>
                 </a>
             <% }); %>
         </div>

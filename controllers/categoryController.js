@@ -78,7 +78,7 @@ const categoryController = {
     }
   },
 
-  // Kategori sil
+  // Kategori sil - GÜNCELLENDİ: DELETE methodu için
   deleteCategory: async (req, res) => {
     try {
       const { id } = req.params;
