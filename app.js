@@ -25,16 +25,17 @@ app.use(methodOverride('_method')); // PUT ve DELETE için
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Helpers'ı tüm template'lere aktar
+// Helpers'ı ve sabitleri tüm template'lere aktar
 app.locals.helpers = helpers;
-app.locals.APP_CONSTANTS = require('./config/constants').APP_CONSTANTS;
+// HATA DÜZELTMESİ: Değişken adı 'constants' olarak düzeltildi.
+app.locals.constants = require('./config/constants').APP_CONSTANTS;
 
 // Routes
 app.use('/', require('./routes'));
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).render('pages/error', { 
+  res.status(404).render('pages/error', {
     title: 'Sayfa Bulunamadı',
     message: 'Aradığınız sayfa mevcut değil.'
   });
@@ -48,7 +49,7 @@ const startServer = async () => {
   try {
     await connectDB();
     console.log('✅ MongoDB bağlantısı başarılı');
-    
+
     app.listen(PORT, () => {
       console.log(`🚀 Sunucu http://localhost:${PORT} adresinde çalışıyor`);
     });

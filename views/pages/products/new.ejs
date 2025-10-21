@@ -113,7 +113,7 @@ const layout = 'layouts/main';
                                     class="form-textarea" 
                                     rows="3"
                                     placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
-                                ><%= product.images ? product.images.join('&#10;') : '' %></textarea>
+                                ><%= typeof product.images !== 'undefined' && Array.isArray(product.images) ? product.images.join('&#10;') : (product.images || '') %></textarea>
                             </div>
 
                             <div class="form-group full-width">
@@ -124,7 +124,7 @@ const layout = 'layouts/main';
                                     class="form-textarea" 
                                     rows="3"
                                     placeholder="Hızlı şarj&#10;Suya dayanıklı&#10;Kablosuz şarj"
-                                ><%= product.features ? product.features.join('&#10;') : '' %></textarea>
+                                ><%= typeof product.features !== 'undefined' && Array.isArray(product.features) ? product.features.join('&#10;') : (product.features || '') %></textarea>
                             </div>
                         </div>
 
