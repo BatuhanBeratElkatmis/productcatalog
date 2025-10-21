@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "electronics",
+    "name": "Elektronik",
+    "slug": "electronics",
+    "description": "Akıllı telefonlar, bilgisayarlar, tabletler ve diğer elektronik cihazlar",
+    "image": "/assets/images/categories/electronics.jpg",
+    "isActive": true,
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "updatedAt": "2024-01-15T10:00:00.000Z"
+  },
+  {
+    "_id": "fashion",
+    "name": "Moda",
+    "slug": "fashion",
+    "description": "Giyim, ayakkabı, aksesuar ve moda ürünleri",
+    "image": "/assets/images/categories/fashion.jpg",
+    "isActive": true,
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "updatedAt": "2024-01-15T10:00:00.000Z"
+  },
+  {
+    "_id": "home",
+    "name": "Ev & Yaşam",
+    "slug": "home",
+    "description": "Mobilya, ev dekorasyonu, mutfak ve bahçe ürünleri",
+    "image": "/assets/images/categories/home.jpg",
+    "isActive": true,
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "updatedAt": "2024-01-15T10:00:00.000Z"
+  },
+  {
+    "_id": "sports",
+    "name": "Spor & Outdoor",
+    "slug": "sports",
+    "description": "Spor ekipmanları, outdoor ürünleri ve fitness",
+    "image": "/assets/images/categories/sports.jpg",
+    "isActive": true,
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "updatedAt": "2024-01-15T10:00:00.000Z"
+  },
+  {
+    "_id": "books",
+    "name": "Kitaplar",
+    "slug": "books",
+    "description": "Romanlar, eğitim kitapları, dergiler ve daha fazlası",
+    "image": "/assets/images/categories/books.jpg",
+    "isActive": true,
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "updatedAt": "2024-01-15T10:00:00.000Z"
+  }
+]

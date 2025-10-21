@@ -1,0 +1,86 @@
+<%
+const layout = 'layouts/main';
+%>
+
+<%- include(layout, {
+    body: `
+        <div class="contact-page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">İletişim</h1>
+                    <p class="page-subtitle">Bize ulaşın, sorularınızı yanıtlamaktan mutluluk duyarız</p>
+                </div>
+
+                <div class="contact-layout">
+                    <div class="contact-info">
+                        <h2>İletişim Bilgileri</h2>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-details">
+                                <h3>E-posta</h3>
+                                <p>info@productcatalog.com</p>
+                                <p>destek@productcatalog.com</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-details">
+                                <h3>Telefon</h3>
+                                <p>+90 (212) 123 45 67</p>
+                                <p>+90 (532) 123 45 67</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div class="contact-details">
+                                <h3>Adres</h3>
+                                <p>Maslak Mahallesi, Bilim Sokak No: 123</p>
+                                <p>Sarıyer, İstanbul, Türkiye</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">🕒</div>
+                            <div class="contact-details">
+                                <h3>Çalışma Saatleri</h3>
+                                <p>Pazartesi - Cuma: 09:00 - 18:00</p>
+                                <p>Cumartesi: 10:00 - 16:00</p>
+                                <p>Pazar: Kapalı</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-form">
+                        <h2>Mesaj Gönderin</h2>
+                        <form action="/contact" method="POST" class="form">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Adınız Soyadınız *</label>
+                                <input type="text" id="name" name="name" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">E-posta Adresiniz *</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject" class="form-label">Konu *</label>
+                                <input type="text" id="subject" name="subject" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message" class="form-label">Mesajınız *</label>
+                                <textarea id="message" name="message" class="form-textarea" rows="5" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Mesajı Gönder</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+}) %>

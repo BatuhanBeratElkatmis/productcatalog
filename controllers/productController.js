@@ -1,0 +1,283 @@
+const Product = require('../models/Product');
+const Category = require('../models/Category');
+const { APP_CONSTANTS, SORT_OPTIONS } = require('../config/constants');
+
+const productController = {
+  // Ürün listesi sayfası
+  getProducts: async (req, res) => {
+    try {
+      const {
+        category,
+        minPrice,
+        maxPrice,
+        rating,
+        inStock,
+        brand,
+        sort,
+        page = 1
+      } = req.query;
+
+      // Filtre objesini oluştur
+      const filters = {
+        category,
+        minPrice,
+        maxPrice,
+        rating,
+        inStock,
+        brand
+      };
+
+      // Sıralama seçeneği
+      let sortOption = SORT_OPTIONS.NEWEST;
+      if (sort && SORT_OPTIONS[sort.toUpperCase()]) {
+        sortOption = SORT_OPTIONS[sort.toUpperCase()];
+      }
+
+      // Sayfalama
+      const pagination = {
+        page: parseInt(page),
+        limit: APP_CONSTANTS.ITEMS_PER_PAGE
+      };
+
+      // Ürünleri getir
+      const result = await Product.getAll(filters, sortOption, pagination);
+      
+      // Kategorileri getir (filtreleme için)
+      const categories = await Category.getAll();
+
+      // Markaları getir (filtreleme için)
+      const brands = await Product.getBrands();
+
+      res.render('pages/products/list', {
+        title: 'Ürünler',
+        products: result.products,
+        pagination: result.pagination,
+        categories,
+        brands,
+        filters,
+        sortOptions: SORT_OPTIONS,
+        currentSort: sort,
+        constants: APP_CONSTANTS
+      });
+    } catch (error) {
+      console.error('Ürün listesi yüklenirken hata:', error);
+      res.status(500).render('pages/error', {
+        title: 'Hata',
+        message: 'Ürün listesi yüklenirken bir hata oluştu.'
+      });
+    }
+  },
+
+  // Arama sonuçları
+  searchProducts: async (req, res) => {
+    try {
+      const { q: searchQuery, page = 1 } = req.query;
+
+      if (!searchQuery) {
+        return res.redirect('/products');
+      }
+
+      const filters = { search: searchQuery };
+      const pagination = {
+        page: parseInt(page),
+        limit: APP_CONSTANTS.ITEMS_PER_PAGE
+      };
+
+      const result = await Product.getAll(filters, {}, pagination);
+
+      res.render('pages/products/list', {
+        title: `"${searchQuery}" Arama Sonuçları`,
+        products: result.products,
+        pagination: result.pagination,
+        searchQuery,
+        filters,
+        constants: APP_CONSTANTS
+      });
+    } catch (error) {
+      console.error('Arama sonuçları yüklenirken hata:', error);
+      res.status(500).render('pages/error', {
+        title: 'Hata',
+        message: 'Arama sonuçları yüklenirken bir hata oluştu.'
+      });
+    }
+  },
+
+  // Ürün detay sayfası
+  getProductDetail: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const product = await Product.getById(id);
+      
+      if (!product) {
+        return res.status(404).render('pages/error', {
+          title: 'Ürün Bulunamadı',
+          message: 'Aradığınız ürün mevcut değil.'
+        });
+      }
+
+      // Benzer ürünleri getir
+      const similarProducts = await Product.getSimilar(id, product.category, 4);
+
+      res.render('pages/products/detail', {
+        title: product.name,
+        product,
+        similarProducts,
+        constants: APP_CONSTANTS
+      });
+    } catch (error) {
+      console.error('Ürün detayı yüklenirken hata:', error);
+      res.status(500).render('pages/error', {
+        title: 'Hata',
+        message: 'Ürün detayı yüklenirken bir hata oluştu.'
+      });
+    }
+  },
+
+  // Yeni ürün formu
+  getNewProductForm: async (req, res) => {
+    try {
+      const categories = await Category.getAll();
+
+      res.render('pages/products/new', {
+        title: 'Yeni Ürün Ekle',
+        categories,
+        constants: APP_CONSTANTS,
+        product: {} // Boş ürün objesi (form için)
+      });
+    } catch (error) {
+      console.error('Yeni ürün formu yüklenirken hata:', error);
+      res.status(500).render('pages/error', {
+        title: 'Hata',
+        message: 'Form yüklenirken bir hata oluştu.'
+      });
+    }
+  },
+
+  // Yeni ürün oluştur
+  createProduct: async (req, res) => {
+    try {
+      const productData = req.body;
+
+      // Basit validasyon
+      if (!productData.name || !productData.price) {
+        const categories = await Category.getAll();
+        return res.render('pages/products/new', {
+          title: 'Yeni Ürün Ekle',
+          categories,
+          constants: APP_CONSTANTS,
+          product: productData,
+          error: 'Ürün adı ve fiyat zorunludur.'
+        });
+      }
+
+      const productId = await Product.create(productData);
+
+      res.redirect(`/products/${productId}`);
+    } catch (error) {
+      console.error('Ürün oluşturulurken hata:', error);
+      const categories = await Category.getAll();
+      res.status(500).render('pages/products/new', {
+        title: 'Yeni Ürün Ekle',
+        categories,
+        constants: APP_CONSTANTS,
+        product: req.body,
+        error: 'Ürün oluşturulurken bir hata oluştu.'
+      });
+    }
+  },
+
+  // Ürün düzenleme formu
+  getEditProductForm: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const product = await Product.getById(id);
+      const categories = await Category.getAll();
+
+      if (!product) {
+        return res.status(404).render('pages/error', {
+          title: 'Ürün Bulunamadı',
+          message: 'Düzenlemek istediğiniz ürün mevcut değil.'
+        });
+      }
+
+      res.render('pages/products/edit', {
+        title: 'Ürünü Düzenle',
+        product,
+        categories,
+        constants: APP_CONSTANTS
+      });
+    } catch (error) {
+      console.error('Ürün düzenleme formu yüklenirken hata:', error);
+      res.status(500).render('pages/error', {
+        title: 'Hata',
+        message: 'Form yüklenirken bir hata oluştu.'
+      });
+    }
+  },
+
+  // Ürün güncelle
+  updateProduct: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+
+      // Basit validasyon
+      if (!updateData.name || !updateData.price) {
+        const product = await Product.getById(id);
+        const categories = await Category.getAll();
+        return res.render('pages/products/edit', {
+          title: 'Ürünü Düzenle',
+          product: { ...product, ...updateData },
+          categories,
+          constants: APP_CONSTANTS,
+          error: 'Ürün adı ve fiyat zorunludur.'
+        });
+      }
+
+      const updatedCount = await Product.update(id, updateData);
+
+      if (updatedCount === 0) {
+        return res.status(404).render('pages/error', {
+          title: 'Ürün Bulunamadı',
+          message: 'Güncellemek istediğiniz ürün mevcut değil.'
+        });
+      }
+
+      res.redirect(`/products/${id}`);
+    } catch (error) {
+      console.error('Ürün güncellenirken hata:', error);
+      res.status(500).render('pages/error', {
+        title: 'Hata',
+        message: 'Ürün güncellenirken bir hata oluştu.'
+      });
+    }
+  },
+
+  // Ürün sil
+  deleteProduct: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const deletedCount = await Product.delete(id);
+
+      if (deletedCount === 0) {
+        return res.status(404).render('pages/error', {
+          title: 'Ürün Bulunamadı',
+          message: 'Silmek istediğiniz ürün mevcut değil.'
+        });
+      }
+
+      res.redirect('/products');
+    } catch (error) {
+      console.error('Ürün silinirken hata:', error);
+      res.status(500).render('pages/error', {
+        title: 'Hata',
+        message: 'Ürün silinirken bir hata oluştu.'
+      });
+    }
+  }
+};
+
+module.exports = productController;

@@ -1,0 +1,113 @@
+<%
+const layout = 'layouts/main';
+const helpers = require('../../utils/helpers');
+%>
+
+<%- include(layout, {
+    body: `
+        <div class="product-detail-page">
+            <div class="container">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb">
+                    <a href="/">Ana Sayfa</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="/products">Ürünler</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="/products?category=${product.category}">${product.category}</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-current">${product.name}</span>
+                </nav>
+
+                <div class="product-detail">
+                    <!-- Product Images -->
+                    <div class="product-gallery">
+                        <div class="main-image">
+                            <img src="${product.images && product.images[0] ? product.images[0] : '/assets/images/products/placeholder.jpg'}" alt="${product.name}">
+                        </div>
+                        <% if (product.images && product.images.length > 1) { %>
+                        <div class="image-thumbnails">
+                            <% product.images.forEach(function(image, index) { %>
+                                <div class="thumbnail ${index === 0 ? 'active' : ''}">
+                                    <img src="${image}" alt="${product.name} - ${index + 1}">
+                                </div>
+                            <% }); %>
+                        </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="product-info">
+                        <h1 class="product-name">${product.name}</h1>
+                        
+                        <div class="product-meta">
+                            <span class="product-brand">Marka: <strong>${product.brand}</strong></span>
+                            <span class="product-category">Kategori: <strong>${product.category}</strong></span>
+                        </div>
+
+                        <div class="product-rating">
+                            <div class="stars">
+                                <% for (let i = 1; i <= 5; i++) { %>
+                                    <% if (i <= Math.floor(product.rating)) { %>
+                                        <span class="star full">★</span>
+                                    <% } else if (i === Math.ceil(product.rating) && product.rating % 1 !== 0) { %>
+                                        <span class="star half">★</span>
+                                    <% } else { %>
+                                        <span class="star empty">★</span>
+                                    <% } %>
+                                <% } %>
+                            </div>
+                            <span class="rating-value">${product.rating} (${Math.floor(Math.random() * 100) + 50} değerlendirme)</span>
+                        </div>
+
+                        <div class="product-price">
+                            <span class="price">${helpers.formatPrice(product.price)}</span>
+                        </div>
+
+                        <div class="product-stock">
+                            <span class="stock-status ${product.stock > 0 ? 'in-stock' : 'out-of-stock'}">
+                                ${product.stock > 0 ? product.stock + ' adet stokta' : 'Stokta yok'}
+                            </span>
+                        </div>
+
+                        <div class="product-description">
+                            <h3>Ürün Açıklaması</h3>
+                            <p>${product.description}</p>
+                        </div>
+
+                        <% if (product.features && product.features.length > 0) { %>
+                        <div class="product-features">
+                            <h3>Özellikler</h3>
+                            <ul class="features-list">
+                                <% product.features.forEach(function(feature) { %>
+                                    <li class="feature-item">${feature}</li>
+                                <% }); %>
+                            </ul>
+                        </div>
+                        <% } %>
+
+                        <div class="product-actions">
+                            <a href="/products" class="btn btn-secondary">
+                                ← Ürünlere Dön
+                            </a>
+                            <a href="/products/${product._id}/edit" class="btn btn-primary">
+                                Ürünü Düzenle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Similar Products -->
+                <% if (similarProducts && similarProducts.length > 0) { %>
+                <section class="similar-products">
+                    <h2 class="section-title">Benzer Ürünler</h2>
+                    <div class="products-grid">
+                        <% similarProducts.forEach(function(similarProduct) { %>
+                            <%- include('../partials/product-card', { product: similarProduct, helpers }) %>
+                        <% }); %>
+                    </div>
+                </section>
+                <% } %>
+            </div>
+        </div>
+    `
+}) %>

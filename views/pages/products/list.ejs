@@ -1,0 +1,77 @@
+<%
+const layout = 'layouts/main';
+const helpers = require('../../utils/helpers');
+%>
+
+<%- include(layout, {
+    body: `
+        <div class="products-page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">
+                        <% if (typeof searchQuery !== 'undefined') { %>
+                            "${searchQuery}" Arama Sonuçları
+                        <% } else if (filters.category && filters.category !== 'all') { %>
+                            <% 
+                                const category = categories.find(cat => cat._id === filters.category);
+                                const categoryName = category ? category.name : filters.category;
+                            %>
+                            ${categoryName} Ürünleri
+                        <% } else { %>
+                            Tüm Ürünler
+                        <% } %>
+                    </h1>
+                    <p class="page-subtitle">
+                        <% if (typeof searchQuery !== 'undefined') { %>
+                            ${pagination.total} ürün bulundu
+                        <% } else { %>
+                            Toplam ${pagination.total} ürün
+                        <% } %>
+                    </p>
+                </div>
+
+                <div class="products-layout">
+                    <!-- Filter Sidebar -->
+                    <div class="products-sidebar">
+                        <%- include('../partials/filter-sidebar', { 
+                            categories, 
+                            filters, 
+                            sortOptions, 
+                            currentSort, 
+                            brands,
+                            helpers 
+                        }) %>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div class="products-main">
+                        <% if (products.length === 0) { %>
+                            <div class="empty-state">
+                                <div class="empty-icon">🔍</div>
+                                <h3 class="empty-title">Ürün Bulunamadı</h3>
+                                <p class="empty-description">
+                                    Arama kriterlerinize uygun ürün bulunamadı. Filtreleri temizleyip tekrar deneyin.
+                                </p>
+                                <a href="/products" class="btn btn-primary">Tüm Ürünleri Gör</a>
+                            </div>
+                        <% } else { %>
+                            <div class="products-grid">
+                                <% products.forEach(function(product) { %>
+                                    <%- include('../partials/product-card', { product, helpers }) %>
+                                <% }); %>
+                            </div>
+
+                            <!-- Pagination -->
+                            <%- include('../partials/pagination', { 
+                                pagination, 
+                                currentUrl: '/products',
+                                query: filters,
+                                helpers 
+                            }) %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+}) %>

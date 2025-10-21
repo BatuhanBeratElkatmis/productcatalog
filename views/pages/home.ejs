@@ -1,0 +1,85 @@
+<%
+const layout = 'layouts/main';
+const helpers = require('../../utils/helpers');
+%>
+
+<%- include(layout, { 
+    body: `
+        <!-- Hero Banner -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Yeni Ürünler Geldi!</h1>
+                    <p class="hero-subtitle">Yeni sezon fırsatlarını keşfedin ve en kaliteli ürünlere sahip olun.</p>
+                    <a href="/products" class="btn btn-primary btn-lg">Ürünleri Keşfet</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Categories -->
+        <section class="section categories-section">
+            <div class="container">
+                <h2 class="section-title">Popüler Kategoriler</h2>
+                <div class="categories-grid">
+                    <% categories.forEach(function(category) { %>
+                        <a href="/products?category=<%= category._id %>" class="category-card">
+                            <div class="category-icon">
+                                <% if (category._id === 'electronics') { %>📱<% } %>
+                                <% if (category._id === 'fashion') { %>👕<% } %>
+                                <% if (category._id === 'home') { %>🏠<% } %>
+                                <% if (category._id === 'sports') { %>⚽<% } %>
+                                <% if (category._id === 'books') { %>📚<% } %>
+                            </div>
+                            <h3 class="category-name"><%= category.name %></h3>
+                            <p class="category-description"><%= category.description %></p>
+                        </a>
+                    <% }); %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="section products-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Öne Çıkan Ürünler</h2>
+                    <a href="/products" class="section-link">Tümünü Gör →</a>
+                </div>
+                
+                <div class="products-grid">
+                    <% popularProducts.forEach(function(product) { %>
+                        <%- include('../partials/product-card', { product, helpers }) %>
+                    <% }); %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section features-section">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🚚</div>
+                        <h3 class="feature-title">Ücretsiz Kargo</h3>
+                        <p class="feature-description">150 TL ve üzeri alışverişlerde ücretsiz kargo</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">↩️</div>
+                        <h3 class="feature-title">Kolay İade</h3>
+                        <p class="feature-description">30 gün içinde ücretsiz iade imkanı</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔒</div>
+                        <h3 class="feature-title">Güvenli Alışveriş</h3>
+                        <p class="feature-description">%100 güvenli ödeme sistemi</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📞</div>
+                        <h3 class="feature-title">7/24 Destek</h3>
+                        <p class="feature-description">Müşteri hizmetleri her zaman yanınızda</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `
+}) %>

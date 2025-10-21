@@ -1,0 +1,114 @@
+/* Categories Page Styles */
+.categories-page {
+    padding: var(--space-8) 0;
+}
+
+.add-category-section {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+    box-shadow: var(--shadow-sm);
+}
+
+.category-form {
+    margin-top: var(--space-4);
+}
+
+.categories-section {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Categories Table */
+.table-container {
+    overflow-x: auto;
+}
+
+.categories-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+}
+
+.categories-table th {
+    background: var(--gray-50);
+    padding: var(--space-4) var(--space-3);
+    text-align: left;
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-700);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.categories-table td {
+    padding: var(--space-4) var(--space-3);
+    border-bottom: 1px solid var(--gray-200);
+    vertical-align: middle;
+}
+
+.categories-table tr:last-child td {
+    border-bottom: none;
+}
+
+.categories-table tr:hover {
+    background: var(--gray-50);
+}
+
+.category-name {
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-900);
+}
+
+.category-description {
+    color: var(--gray-600);
+    max-width: 300px;
+}
+
+.count-badge {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+.category-actions {
+    display: flex;
+    gap: var(--space-2);
+    white-space: nowrap;
+}
+
+.delete-form {
+    display: inline;
+}
+
+/* Mobile Categories Page */
+@media (max-width: 768px) {
+    .categories-page {
+        padding: var(--space-6) 0;
+    }
+
+    .add-category-section,
+    .categories-section {
+        padding: var(--space-4);
+    }
+
+    .category-actions {
+        flex-direction: column;
+    }
+
+    .categories-table {
+        font-size: var(--font-size-xs);
+    }
+
+    .categories-table th,
+    .categories-table td {
+        padding: var(--space-3) var(--space-2);
+    }
+}

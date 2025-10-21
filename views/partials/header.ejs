@@ -1,0 +1,29 @@
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="header-logo">
+                <a href="/" class="logo-link">
+                    <span class="logo-icon">🛒</span>
+                    <span class="logo-text"><%= constants.APP_NAME %></span>
+                </a>
+            </div>
+            
+            <div class="header-actions">
+                <div class="search-container">
+                    <form action="/products/search" method="GET" class="search-form">
+                        <input 
+                            type="search" 
+                            name="q" 
+                            placeholder="Ürün ara..." 
+                            class="search-input"
+                            value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+                        >
+                        <button type="submit" class="search-button">
+                            <span class="search-icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

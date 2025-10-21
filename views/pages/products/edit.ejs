@@ -1,0 +1,138 @@
+<%
+const layout = 'layouts/main';
+%>
+
+<%- include(layout, {
+    body: `
+        <div class="product-form-page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Ürünü Düzenle</h1>
+                    <p class="page-subtitle">"${product.name}" ürününün bilgilerini güncelleyin</p>
+                </div>
+
+                <div class="form-container">
+                    <form action="/products/<%= product._id %>/edit" method="POST" class="product-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Ürün Adı *</label>
+                                <input 
+                                    type="text" 
+                                    id="name" 
+                                    name="name" 
+                                    class="form-input" 
+                                    value="<%= product.name %>"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="brand" class="form-label">Marka *</label>
+                                <input 
+                                    type="text" 
+                                    id="brand" 
+                                    name="brand" 
+                                    class="form-input" 
+                                    value="<%= product.brand %>"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="price" class="form-label">Fiyat (₺) *</label>
+                                <input 
+                                    type="number" 
+                                    id="price" 
+                                    name="price" 
+                                    class="form-input" 
+                                    step="0.01"
+                                    min="0"
+                                    value="<%= product.price %>"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="category" class="form-label">Kategori *</label>
+                                <select id="category" name="category" class="form-select" required>
+                                    <option value="">Kategori Seçin</option>
+                                    <% categories.forEach(function(cat) { %>
+                                        <option 
+                                            value="<%= cat._id %>"
+                                            <%= product.category === cat._id ? 'selected' : '' %>
+                                        >
+                                            <%= cat.name %>
+                                        </option>
+                                    <% }); %>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="stock" class="form-label">Stok Miktarı *</label>
+                                <input 
+                                    type="number" 
+                                    id="stock" 
+                                    name="stock" 
+                                    class="form-input" 
+                                    min="0"
+                                    value="<%= product.stock %>"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rating" class="form-label">Puan (0-5)</label>
+                                <input 
+                                    type="number" 
+                                    id="rating" 
+                                    name="rating" 
+                                    class="form-input" 
+                                    step="0.1"
+                                    min="0"
+                                    max="5"
+                                    value="<%= product.rating %>"
+                                >
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="description" class="form-label">Açıklama *</label>
+                                <textarea 
+                                    id="description" 
+                                    name="description" 
+                                    class="form-textarea" 
+                                    rows="4"
+                                    required
+                                ><%= product.description %></textarea>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="images" class="form-label">Resim URL'leri (her satıra bir URL)</label>
+                                <textarea 
+                                    id="images" 
+                                    name="images" 
+                                    class="form-textarea" 
+                                    rows="3"
+                                ><%= product.images ? product.images.join('&#10;') : '' %></textarea>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="features" class="form-label">Özellikler (her satıra bir özellik)</label>
+                                <textarea 
+                                    id="features" 
+                                    name="features" 
+                                    class="form-textarea" 
+                                    rows="3"
+                                ><%= product.features ? product.features.join('&#10;') : '' %></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="/products/<%= product._id %>" class="btn btn-secondary">İptal</a>
+                            <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    `
+}) %>

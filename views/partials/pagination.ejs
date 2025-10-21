@@ -1,0 +1,36 @@
+<% if (pagination.pages > 1) { %>
+<div class="pagination">
+    <% if (pagination.page > 1) { %>
+        <a 
+            href="<%= helpers.buildPaginationUrl(currentUrl, query, pagination.page - 1) %>" 
+            class="pagination-link pagination-prev"
+        >
+            ← Önceki
+        </a>
+    <% } %>
+
+    <div class="pagination-numbers">
+        <% for (let i = 1; i <= pagination.pages; i++) { %>
+            <% if (i === 1 || i === pagination.pages || (i >= pagination.page - 2 && i <= pagination.page + 2)) { %>
+                <a 
+                    href="<%= helpers.buildPaginationUrl(currentUrl, query, i) %>" 
+                    class="pagination-link <%= i === pagination.page ? 'active' : '' %>"
+                >
+                    <%= i %>
+                </a>
+            <% } else if (i === pagination.page - 3 || i === pagination.page + 3) { %>
+                <span class="pagination-ellipsis">...</span>
+            <% } %>
+        <% } %>
+    </div>
+
+    <% if (pagination.page < pagination.pages) { %>
+        <a 
+            href="<%= helpers.buildPaginationUrl(currentUrl, query, pagination.page + 1) %>" 
+            class="pagination-link pagination-next"
+        >
+            Sonraki →
+        </a>
+    <% } %>
+</div>
+<% } %>

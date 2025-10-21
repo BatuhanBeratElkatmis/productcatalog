@@ -1,0 +1,62 @@
+<div class="product-card">
+    <div class="product-image">
+        <a href="/products/<%= product._id %>">
+            <img 
+                src="<%= product.images && product.images[0] ? product.images[0] : '/assets/images/products/placeholder.jpg' %>" 
+                alt="<%= product.name %>"
+                loading="lazy"
+            >
+        </a>
+        <% if (product.stock === 0) { %>
+            <div class="product-badge out-of-stock">Stokta Yok</div>
+        <% } else if (product.rating >= 4.5) { %>
+            <div class="product-badge popular">Popüler</div>
+        <% } %>
+    </div>
+    
+    <div class="product-info">
+        <h3 class="product-title">
+            <a href="/products/<%= product._id %>"><%= product.name %></a>
+        </h3>
+        
+        <div class="product-brand">
+            <span class="brand-text"><%= product.brand %></span>
+        </div>
+        
+        <div class="product-rating">
+            <div class="stars">
+                <% for (let i = 1; i <= 5; i++) { %>
+                    <% if (i <= Math.floor(product.rating)) { %>
+                        <span class="star full">★</span>
+                    <% } else if (i === Math.ceil(product.rating) && product.rating % 1 !== 0) { %>
+                        <span class="star half">★</span>
+                    <% } else { %>
+                        <span class="star empty">★</span>
+                    <% } %>
+                <% } %>
+            </div>
+            <span class="rating-value">(<%= product.rating %>)</span>
+        </div>
+        
+        <div class="product-price">
+            <span class="price-amount"><%= helpers.formatPrice(product.price) %></span>
+        </div>
+        
+        <div class="product-meta">
+            <span class="stock-status <%= product.stock > 0 ? 'in-stock' : 'out-of-stock' %>">
+                <%= product.stock > 0 ? product.stock + ' adet' : 'Stokta yok' %>
+            </span>
+        </div>
+        
+        <div class="product-actions">
+            <a href="/products/<%= product._id %>" class="btn btn-primary btn-sm">
+                Detayları Gör
+            </a>
+            <% if (typeof showEdit !== 'undefined' && showEdit) { %>
+                <a href="/products/<%= product._id %>/edit" class="btn btn-secondary btn-sm">
+                    Düzenle
+                </a>
+            <% } %>
+        </div>
+    </div>
+</div>

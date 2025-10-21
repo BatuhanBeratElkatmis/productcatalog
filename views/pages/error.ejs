@@ -1,0 +1,33 @@
+<%
+const layout = 'layouts/main';
+%>
+
+<%- include(layout, {
+    body: `
+        <div class="error-page">
+            <div class="container">
+                <div class="error-content">
+                    <div class="error-icon">⚠️</div>
+                    <h1 class="error-title">Bir Hata Oluştu</h1>
+                    <p class="error-message">
+                        <%= typeof message !== 'undefined' ? message : 'Üzgünüz, bir hata oluştu. Lütfen daha sonra tekrar deneyin.' %>
+                    </p>
+                    
+                    <% if (typeof stack !== 'undefined' && stack && process.env.NODE_ENV === 'development') { %>
+                    <div class="error-details">
+                        <details>
+                            <summary>Hata Detayları (Geliştirici için)</summary>
+                            <pre><%= stack %></pre>
+                        </details>
+                    </div>
+                    <% } %>
+
+                    <div class="error-actions">
+                        <a href="/" class="btn btn-primary">Ana Sayfaya Dön</a>
+                        <a href="/products" class="btn btn-secondary">Ürünlere Göz At</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+}) %>

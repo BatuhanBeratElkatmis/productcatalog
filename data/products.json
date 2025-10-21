@@ -1,0 +1,242 @@
+[
+  {
+    "_id": "1",
+    "name": "iPhone 15 Pro",
+    "description": "Yeni A17 Pro çipli, titanyum tasarımlı en gelişmiş iPhone",
+    "price": 74999,
+    "category": "electronics",
+    "brand": "Apple",
+    "images": [
+      "/assets/images/products/iphone15-pro-1.jpg",
+      "/assets/images/products/iphone15-pro-2.jpg"
+    ],
+    "stock": 15,
+    "rating": 4.8,
+    "features": ["A17 Pro Çip", "Titanyum Tasarım", "48MP Ana Kamera", "USB-C"],
+    "specifications": {
+      "screen": "6.1 inç Super Retina XDR",
+      "storage": "128GB",
+      "camera": "48MP + 12MP + 12MP",
+      "battery": "3274 mAh"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-20T09:00:00.000Z",
+    "updatedAt": "2024-01-20T09:00:00.000Z"
+  },
+  {
+    "_id": "2",
+    "name": "Samsung Galaxy S24 Ultra",
+    "description": "AI özellikli, S Pen destekli premium Android telefon",
+    "price": 69999,
+    "category": "electronics",
+    "brand": "Samsung",
+    "images": [
+      "/assets/images/products/galaxy-s24-ultra-1.jpg",
+      "/assets/images/products/galaxy-s24-ultra-2.jpg"
+    ],
+    "stock": 12,
+    "rating": 4.7,
+    "features": ["AI Özellikleri", "S Pen", "200MP Kamera", "Snapdragon 8 Gen 3"],
+    "specifications": {
+      "screen": "6.8 inç Dynamic AMOLED 2X",
+      "storage": "256GB",
+      "camera": "200MP + 50MP + 12MP + 10MP",
+      "battery": "5000 mAh"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-19T10:00:00.000Z",
+    "updatedAt": "2024-01-19T10:00:00.000Z"
+  },
+  {
+    "_id": "3",
+    "name": "MacBook Air M3",
+    "description": "M3 çipli, ince ve hafif tasarımlı güçlü laptop",
+    "price": 52999,
+    "category": "electronics",
+    "brand": "Apple",
+    "images": [
+      "/assets/images/products/macbook-air-m3-1.jpg",
+      "/assets/images/products/macbook-air-m3-2.jpg"
+    ],
+    "stock": 8,
+    "rating": 4.9,
+    "features": ["M3 Çip", "13.6 inç Liquid Retina", "18 Saat Pil", "macOS"],
+    "specifications": {
+      "screen": "13.6 inç Liquid Retina",
+      "storage": "256GB SSD",
+      "memory": "8GB Unified Memory",
+      "processor": "Apple M3"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-18T11:00:00.000Z",
+    "updatedAt": "2024-01-18T11:00:00.000Z"
+  },
+  {
+    "_id": "4",
+    "name": "Nike Air Max 270",
+    "description": "Rahatlık ve stil bir arada, günlük kullanım için ideal spor ayakkabı",
+    "price": 2899,
+    "category": "fashion",
+    "brand": "Nike",
+    "images": [
+      "/assets/images/products/nike-air-max-270-1.jpg",
+      "/assets/images/products/nike-air-max-270-2.jpg"
+    ],
+    "stock": 25,
+    "rating": 4.5,
+    "features": ["Air Max Teknolojisi", "Nefes Alabilir Tasarım", "Hafif"],
+    "specifications": {
+      "material": "Mesh ve Deri",
+      "color": "Beyaz/Siyah",
+      "sizeRange": "36-46",
+      "gender": "Unisex"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-17T12:00:00.000Z",
+    "updatedAt": "2024-01-17T12:00:00.000Z"
+  },
+  {
+    "_id": "5",
+    "name": "Adidas Ultraboost 22",
+    "description": "Boost teknolojili, maksimum konfor sunan koşu ayakkabısı",
+    "price": 3299,
+    "category": "fashion",
+    "brand": "Adidas",
+    "images": [
+      "/assets/images/products/adidas-ultraboost-22-1.jpg",
+      "/assets/images/products/adidas-ultraboost-22-2.jpg"
+    ],
+    "stock": 18,
+    "rating": 4.6,
+    "features": ["Boost Teknolojisi", "Primeknit Üst", "Torsion Sistemi"],
+    "specifications": {
+      "material": "Primeknit",
+      "color": "Siyah/Beyaz",
+      "sizeRange": "36-46",
+      "gender": "Unisex"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-16T13:00:00.000Z",
+    "updatedAt": "2024-01-16T13:00:00.000Z"
+  },
+  {
+    "_id": "6",
+    "name": "IKEA MARKUS Ofis Koltuğu",
+    "description": "Ergonomik tasarımlı, uzun süreli kullanım için ideal ofis koltuğu",
+    "price": 1999,
+    "category": "home",
+    "brand": "IKEA",
+    "images": [
+      "/assets/images/products/ikea-markus-1.jpg",
+      "/assets/images/products/ikea-markus-2.jpg"
+    ],
+    "stock": 10,
+    "rating": 4.3,
+    "features": ["Ergonomik Tasarım", "Ayarlanabilir Kolçaklar", "Mesh Sırt"],
+    "specifications": {
+      "material": "Mesh ve Polyester",
+      "color": "Siyah",
+      "maxWeight": "110 kg",
+      "warranty": "10 Yıl"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-15T14:00:00.000Z",
+    "updatedAt": "2024-01-15T14:00:00.000Z"
+  },
+  {
+    "_id": "7",
+    "name": "Philips 65İnç 4K Android TV",
+    "description": "Android TV özellikli, 4K çözünürlüklü akıllı televizyon",
+    "price": 18999,
+    "category": "electronics",
+    "brand": "Philips",
+    "images": [
+      "/assets/images/products/philips-4k-tv-1.jpg",
+      "/assets/images/products/philips-4k-tv-2.jpg"
+    ],
+    "stock": 6,
+    "rating": 4.4,
+    "features": ["4K Ultra HD", "Android TV", "HDR10+", "Dolby Atmos"],
+    "specifications": {
+      "screen": "65 inç",
+      "resolution": "3840x2160 (4K)",
+      "smartTV": "Android TV",
+      "ports": "4x HDMI, 2x USB"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-14T15:00:00.000Z",
+    "updatedAt": "2024-01-14T15:00:00.000Z"
+  },
+  {
+    "_id": "8",
+    "name": "Zumba Fitness Seti",
+    "description": "Evde spor için ideal, profesyonel zumba seti",
+    "price": 899,
+    "category": "sports",
+    "brand": "Zumba",
+    "images": [
+      "/assets/images/products/zumba-set-1.jpg",
+      "/assets/images/products/zumba-set-2.jpg"
+    ],
+    "stock": 30,
+    "rating": 4.2,
+    "features": ["Profesyonel Set", "Online Ders Erişimi", "Hafif Malzeme"],
+    "specifications": {
+      "contents": "2 Adet Zumba Maracas",
+      "material": "Plastik",
+      "level": "Başlangıç-İleri",
+      "ageRange": "12+ Yaş"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-13T16:00:00.000Z",
+    "updatedAt": "2024-01-13T16:00:00.000Z"
+  },
+  {
+    "_id": "9",
+    "name": "Süper Zengin Asyalı Baba",
+    "description": "Kevin Kwan'ın en çok satan romanı",
+    "price": 89,
+    "category": "books",
+    "brand": "Can Yayınları",
+    "images": [
+      "/assets/images/products/crazy-rich-asians-1.jpg",
+      "/assets/images/products/crazy-rich-asians-2.jpg"
+    ],
+    "stock": 50,
+    "rating": 4.7,
+    "features": ["Çok Satan Roman", "Film Uyarlaması", "Mizahi Dil"],
+    "specifications": {
+      "author": "Kevin Kwan",
+      "pages": "528",
+      "publisher": "Can Yayınları",
+      "language": "Türkçe"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-12T17:00:00.000Z",
+    "updatedAt": "2024-01-12T17:00:00.000Z"
+  },
+  {
+    "_id": "10",
+    "name": "Apple Watch Series 9",
+    "description": "En gelişmiş Apple Watch, sağlık ve fitness takibi",
+    "price": 15999,
+    "category": "electronics",
+    "brand": "Apple",
+    "images": [
+      "/assets/images/products/apple-watch-9-1.jpg",
+      "/assets/images/products/apple-watch-9-2.jpg"
+    ],
+    "stock": 20,
+    "rating": 4.8,
+    "features": ["Always-On Display", "ECG", "Kan Oksijen Ölçümü", "GPS"],
+    "specifications": {
+      "screen": "45 mm Retina",
+      "battery": "18 Saat",
+      "connectivity": "GPS + Cellular",
+      "waterResistance": "50 metre"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-11T18:00:00.000Z",
+    "updatedAt": "2024-01-11T18:00:00.000Z"
+  }
+]

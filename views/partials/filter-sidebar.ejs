@@ -1,0 +1,117 @@
+<aside class="filter-sidebar">
+    <div class="filter-header">
+        <h3 class="filter-title">Filtreler</h3>
+        <% if (helpers.isFilterActive(filters)) { %>
+            <a href="/products" class="clear-filters">Temizle</a>
+        <% } %>
+    </div>
+
+    <div class="filter-group">
+        <h4 class="filter-group-title">Kategori</h4>
+        <div class="filter-options">
+            <a 
+                href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, category: 'all' }, 1) %>" 
+                class="filter-option <%= !filters.category || filters.category === 'all' ? 'active' : '' %>"
+            >
+                Tüm Kategoriler
+            </a>
+            <% categories.forEach(function(category) { %>
+                <a 
+                    href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, category: category._id }, 1) %>" 
+                    class="filter-option <%= filters.category === category._id ? 'active' : '' %>"
+                >
+                    <%= category.name %>
+                </a>
+            <% }); %>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <h4 class="filter-group-title">Fiyat Aralığı</h4>
+        <form class="price-filter-form" id="priceFilterForm">
+            <div class="price-inputs">
+                <input 
+                    type="number" 
+                    name="minPrice" 
+                    placeholder="Min" 
+                    class="price-input"
+                    value="<%= filters.minPrice || '' %>"
+                >
+                <span class="price-separator">-</span>
+                <input 
+                    type="number" 
+                    name="maxPrice" 
+                    placeholder="Max" 
+                    class="price-input"
+                    value="<%= filters.maxPrice || '' %>"
+                >
+            </div>
+            <button type="submit" class="btn btn-secondary btn-sm">Uygula</button>
+        </form>
+    </div>
+
+    <div class="filter-group">
+        <h4 class="filter-group-title">Değerlendirme</h4>
+        <div class="filter-options">
+            <% [4, 3, 2, 1].forEach(function(rating) { %>
+                <a 
+                    href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, rating: rating }, 1) %>" 
+                    class="filter-option rating-option <%= filters.rating == rating ? 'active' : '' %>"
+                >
+                    <div class="stars">
+                        <% for (let i = 1; i <= 5; i++) { %>
+                            <% if (i <= rating) { %>
+                                <span class="star full">★</span>
+                            <% } else { %>
+                                <span class="star empty">★</span>
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <span class="rating-text">ve üzeri</span>
+                </a>
+            <% }); %>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <h4 class="filter-group-title">Stok Durumu</h4>
+        <div class="filter-options">
+            <a 
+                href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, inStock: 'true' }, 1) %>" 
+                class="filter-option <%= filters.inStock === 'true' ? 'active' : '' %>"
+            >
+                Stokta Olanlar
+            </a>
+        </div>
+    </div>
+
+    <% if (brands && brands.length > 0) { %>
+    <div class="filter-group">
+        <h4 class="filter-group-title">Marka</h4>
+        <div class="filter-options">
+            <% brands.forEach(function(brand) { %>
+                <a 
+                    href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, brand: brand }, 1) %>" 
+                    class="filter-option <%= filters.brand === brand ? 'active' : '' %>"
+                >
+                    <%= brand %>
+                </a>
+            <% }); %>
+        </div>
+    </div>
+    <% } %>
+
+    <div class="filter-group">
+        <h4 class="filter-group-title">Sıralama</h4>
+        <div class="filter-options">
+            <% Object.keys(sortOptions).forEach(function(key) { %>
+                <a 
+                    href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, sort: key.toLowerCase() }, 1) %>" 
+                    class="filter-option <%= currentSort === key.toLowerCase() ? 'active' : '' %>"
+                >
+                    <%= sortOptions[key].label %>
+                </a>
+            <% }); %>
+        </div>
+    </div>
+</aside>

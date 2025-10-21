@@ -1,0 +1,68 @@
+<%
+const layout = 'layouts/main';
+%>
+
+<%- include(layout, {
+    body: `
+        <div class="about-page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Hakkımızda</h1>
+                    <p class="page-subtitle">${constants.APP_NAME} olarak misyonumuz ve vizyonumuz</p>
+                </div>
+
+                <div class="about-content">
+                    <div class="about-section">
+                        <h2>Biz Kimiz?</h2>
+                        <p>
+                            ${constants.APP_NAME}, 2024 yılında müşterilerine en kaliteli ürünleri 
+                            en uygun fiyatlarla sunmak amacıyla kurulmuş bir e-ticaret platformudur. 
+                            Teknoloji, moda, ev yaşamı ve daha birçok kategoride binlerce ürünü 
+                            siz değerli müşterilerimizle buluşturuyoruz.
+                        </p>
+                    </div>
+
+                    <div class="about-section">
+                        <h2>Misyonumuz</h2>
+                        <p>
+                            Müşteri memnuniyetini ön planda tutarak, güvenilir, hızlı ve 
+                            kaliteli alışveriş deneyimi sunmak. Yenilikçi teknolojilerle 
+                            sürekli kendimizi geliştirerek, müşterilerimizin ihtiyaçlarına 
+                            en iyi şekilde cevap vermek.
+                        </p>
+                    </div>
+
+                    <div class="about-section">
+                        <h2>Vizyonumuz</h2>
+                        <p>
+                            Türkiye'nin en güvenilir ve tercih edilen e-ticaret platformu 
+                            olmak. Müşterilerimize sadece ürün satmak değil, aynı zamanda 
+                            unutulmaz bir alışveriş deneyimi yaşatmak.
+                        </p>
+                    </div>
+
+                    <div class="stats-section">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">500+</div>
+                                <div class="stat-label">Ürün Çeşidi</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">10.000+</div>
+                                <div class="stat-label">Mutlu Müşteri</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">Marka</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">7/24</div>
+                                <div class="stat-label">Müşteri Desteği</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+}) %>

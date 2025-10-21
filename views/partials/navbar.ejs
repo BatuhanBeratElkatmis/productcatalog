@@ -1,0 +1,64 @@
+<nav class="navbar">
+    <div class="container">
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="/" class="nav-link <%= typeof title !== 'undefined' && title === 'Ana Sayfa' ? 'active' : '' %>">
+                    <span class="nav-icon">🏠</span>
+                    Ana Sayfa
+                </a>
+            </li>
+            
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle">
+                    <span class="nav-icon">🛍️</span>
+                    Ürünler
+                </a>
+                <div class="dropdown-menu">
+                    <a href="/products" class="dropdown-item">Tüm Ürünler</a>
+                    <a href="/products/new" class="dropdown-item">Yeni Ürün Ekle</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/products?sort=rating_desc" class="dropdown-item">En Yüksek Puanlı</a>
+                    <a href="/products?inStock=true" class="dropdown-item">Stoktaki Ürünler</a>
+                </div>
+            </li>
+            
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle">
+                    <span class="nav-icon">📂</span>
+                    Kategoriler
+                </a>
+                <div class="dropdown-menu">
+                    <a href="/categories" class="dropdown-item">Tüm Kategoriler</a>
+                    <div class="dropdown-divider"></div>
+                    <% if (typeof categories !== 'undefined') { %>
+                        <% categories.forEach(function(category) { %>
+                            <a href="/products?category=<%= category._id %>" class="dropdown-item">
+                                <%= category.name %>
+                            </a>
+                        <% }); %>
+                    <% } else { %>
+                        <a href="/products?category=electronics" class="dropdown-item">Elektronik</a>
+                        <a href="/products?category=fashion" class="dropdown-item">Moda</a>
+                        <a href="/products?category=home" class="dropdown-item">Ev & Yaşam</a>
+                        <a href="/products?category=sports" class="dropdown-item">Spor</a>
+                        <a href="/products?category=books" class="dropdown-item">Kitaplar</a>
+                    <% } %>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="/about" class="nav-link <%= typeof title !== 'undefined' && title === 'Hakkımızda' ? 'active' : '' %>">
+                    <span class="nav-icon">ℹ️</span>
+                    Hakkında
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a href="/contact" class="nav-link <%= typeof title !== 'undefined' && title === 'İletişim' ? 'active' : '' %>">
+                    <span class="nav-icon">📞</span>
+                    İletişim
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
