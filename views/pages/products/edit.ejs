@@ -1,14 +1,32 @@
-<%
-const layout = 'layouts/main';
-%>
-
-<%- include(layout, {
-    body: `
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | <%= constants.APP_NAME %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <meta name="description" content="<%= constants.APP_NAME %> - En kaliteli ürünler en uygun fiyatlarla">
+    <meta name="keywords" content="ürün, katalog, alışveriş, elektronik, moda, spor">
+</head>
+<body>
+    <%- include('../../partials/header') %>
+    <%- include('../../partials/navbar') %>
+    <main class="main-content">
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-error"><strong>Hata!</strong> <%= error %></div>
+        <% } %>
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+            <div class="alert alert-error">
+                <strong>Hatalar:</strong>
+                <ul><% errors.forEach(function(error) { %><li><%= error %></li><% }); %></ul>
+            </div>
+        <% } %>
         <div class="product-form-page">
             <div class="container">
                 <div class="page-header">
                     <h1 class="page-title">Ürünü Düzenle</h1>
-                    <p class="page-subtitle">"${product.name}" ürününün bilgilerini güncelleyin</p>
+                    <p class="page-subtitle">"<%= product.name %>" ürününün bilgilerini güncelleyin</p>
                 </div>
 
                 <div class="form-container">
@@ -16,40 +34,17 @@ const layout = 'layouts/main';
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="name" class="form-label">Ürün Adı *</label>
-                                <input 
-                                    type="text" 
-                                    id="name" 
-                                    name="name" 
-                                    class="form-input" 
-                                    value="<%= product.name %>"
-                                    required
-                                >
+                                <input type="text" id="name" name="name" class="form-input" value="<%= product.name %>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="brand" class="form-label">Marka *</label>
-                                <input 
-                                    type="text" 
-                                    id="brand" 
-                                    name="brand" 
-                                    class="form-input" 
-                                    value="<%= product.brand %>"
-                                    required
-                                >
+                                <input type="text" id="brand" name="brand" class="form-input" value="<%= product.brand %>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="price" class="form-label">Fiyat (₺) *</label>
-                                <input 
-                                    type="number" 
-                                    id="price" 
-                                    name="price" 
-                                    class="form-input" 
-                                    step="0.01"
-                                    min="0"
-                                    value="<%= product.price %>"
-                                    required
-                                >
+                                <input type="number" id="price" name="price" class="form-input" step="0.01" min="0" value="<%= product.price %>" required>
                             </div>
 
                             <div class="form-group">
@@ -57,10 +52,7 @@ const layout = 'layouts/main';
                                 <select id="category" name="category" class="form-select" required>
                                     <option value="">Kategori Seçin</option>
                                     <% categories.forEach(function(cat) { %>
-                                        <option 
-                                            value="<%= cat._id %>"
-                                            <%= product.category === cat._id ? 'selected' : '' %>
-                                        >
+                                        <option value="<%= cat._id %>" <%= product.category === cat._id ? 'selected' : '' %>>
                                             <%= cat.name %>
                                         </option>
                                     <% }); %>
@@ -69,60 +61,27 @@ const layout = 'layouts/main';
 
                             <div class="form-group">
                                 <label for="stock" class="form-label">Stok Miktarı *</label>
-                                <input 
-                                    type="number" 
-                                    id="stock" 
-                                    name="stock" 
-                                    class="form-input" 
-                                    min="0"
-                                    value="<%= product.stock %>"
-                                    required
-                                >
+                                <input type="number" id="stock" name="stock" class="form-input" min="0" value="<%= product.stock %>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="rating" class="form-label">Puan (0-5)</label>
-                                <input 
-                                    type="number" 
-                                    id="rating" 
-                                    name="rating" 
-                                    class="form-input" 
-                                    step="0.1"
-                                    min="0"
-                                    max="5"
-                                    value="<%= product.rating %>"
-                                >
+                                <input type="number" id="rating" name="rating" class="form-input" step="0.1" min="0" max="5" value="<%= product.rating %>">
                             </div>
 
                             <div class="form-group full-width">
                                 <label for="description" class="form-label">Açıklama *</label>
-                                <textarea 
-                                    id="description" 
-                                    name="description" 
-                                    class="form-textarea" 
-                                    rows="4"
-                                    required
-                                ><%= product.description %></textarea>
+                                <textarea id="description" name="description" class="form-textarea" rows="4" required><%= product.description %></textarea>
                             </div>
 
                             <div class="form-group full-width">
                                 <label for="images" class="form-label">Resim URL'leri (her satıra bir URL)</label>
-                                <textarea 
-                                    id="images" 
-                                    name="images" 
-                                    class="form-textarea" 
-                                    rows="3"
-                                ><%= product.images ? product.images.join('&#10;') : '' %></textarea>
+                                <textarea id="images" name="images" class="form-textarea" rows="3"><%= product.images ? product.images.join('\\n') : '' %></textarea>
                             </div>
 
                             <div class="form-group full-width">
                                 <label for="features" class="form-label">Özellikler (her satıra bir özellik)</label>
-                                <textarea 
-                                    id="features" 
-                                    name="features" 
-                                    class="form-textarea" 
-                                    rows="3"
-                                ><%= product.features ? product.features.join('&#10;') : '' %></textarea>
+                                <textarea id="features" name="features" class="form-textarea" rows="3"><%= product.features ? product.features.join('\\n') : '' %></textarea>
                             </div>
                         </div>
 
@@ -134,5 +93,8 @@ const layout = 'layouts/main';
                 </div>
             </div>
         </div>
-    `
-}) %>
+    </main>
+    <%- include('../../partials/footer') %>
+    <script src="/js/main.js"></script>
+</body>
+</html>

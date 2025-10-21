@@ -1,10 +1,27 @@
-<%
-const layout = 'layouts/main';
-const helpers = require('../../utils/helpers');
-%>
-
-<%- include(layout, {
-    body: `
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | <%= constants.APP_NAME %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <meta name="description" content="<%= constants.APP_NAME %> - En kaliteli ürünler en uygun fiyatlarla">
+    <meta name="keywords" content="ürün, katalog, alışveriş, elektronik, moda, spor">
+</head>
+<body>
+    <%- include('../../partials/header') %>
+    <%- include('../../partials/navbar') %>
+    <main class="main-content">
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-error"><strong>Hata!</strong> <%= error %></div>
+        <% } %>
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+            <div class="alert alert-error">
+                <strong>Hatalar:</strong>
+                <ul><% errors.forEach(function(error) { %><li><%= error %></li><% }); %></ul>
+            </div>
+        <% } %>
         <div class="categories-page">
             <div class="container">
                 <div class="page-header">
@@ -14,49 +31,27 @@ const helpers = require('../../utils/helpers');
 
                 <!-- Add Category Form -->
                 <div class="add-category-section">
-                    <h2 class="section-title">Yeni Kategori Ekle</h2>
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 1rem;">Yeni Kategori Ekle</h2>
                     <form action="/categories" method="POST" class="category-form">
-                        <div class="form-row">
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr; align-items: flex-end;">
                             <div class="form-group">
                                 <label for="name" class="form-label">Kategori Adı *</label>
-                                <input 
-                                    type="text" 
-                                    id="name" 
-                                    name="name" 
-                                    class="form-input" 
-                                    placeholder="Örn: Elektronik"
-                                    required
-                                >
+                                <input type="text" id="name" name="name" class="form-input" placeholder="Örn: Elektronik" required>
                             </div>
                             <div class="form-group">
                                 <label for="description" class="form-label">Açıklama</label>
-                                <input 
-                                    type="text" 
-                                    id="description" 
-                                    name="description" 
-                                    class="form-input" 
-                                    placeholder="Kategori açıklaması"
-                                >
+                                <input type="text" id="description" name="description" class="form-input" placeholder="Kısa bir açıklama">
                             </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Kategori Ekle</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary">Ekle</button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Categories Table -->
+                <!-- Categories List -->
                 <div class="categories-section">
-                    <h2 class="section-title">Mevcut Kategoriler</h2>
-                    
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 1rem;">Mevcut Kategoriler</h2>
                     <% if (categories.length === 0) { %>
-                        <div class="empty-state">
-                            <div class="empty-icon">📂</div>
-                            <h3 class="empty-title">Kategori Bulunamadı</h3>
-                            <p class="empty-description">
-                                Henüz hiç kategori eklenmemiş. Yukarıdaki formu kullanarak ilk kategoriyi ekleyin.
-                            </p>
-                        </div>
+                        <p>Henüz hiç kategori eklenmemiş.</p>
                     <% } else { %>
                         <div class="table-container">
                             <table class="categories-table">
@@ -71,29 +66,12 @@ const helpers = require('../../utils/helpers');
                                 <tbody>
                                     <% categories.forEach(function(category) { %>
                                         <tr>
-                                            <td class="category-name">
-                                                <strong><%= category.name %></strong>
-                                            </td>
-                                            <td class="category-description">
-                                                <%= category.description || 'Açıklama yok' %>
-                                            </td>
-                                            <td class="product-count">
-                                                <span class="count-badge"><%= category.productCount %> ürün</span>
-                                            </td>
+                                            <td class="category-name"><%= category.name %></td>
+                                            <td class="category-description"><%= category.description %></td>
+                                            <td><span class="count-badge"><%= category.productCount %> ürün</span></td>
                                             <td class="category-actions">
-                                                <a 
-                                                    href="/products?category=<%= category._id %>" 
-                                                    class="btn btn-secondary btn-sm"
-                                                >
-                                                    Ürünleri Gör
-                                                </a>
-                                                <!-- GÜNCELLENMİŞ SİLME FORMU -->
-                                                <form 
-                                                    action="/categories/<%= category._id %>/delete?_method=DELETE" 
-                                                    method="POST" 
-                                                    class="delete-form"
-                                                    onsubmit="return confirm('Bu kategoriyi silmek istediğinizden emin misiniz?')"
-                                                >
+                                                <a href="/products?category=<%= category._id %>" class="btn btn-secondary btn-sm">Ürünleri Gör</a>
+                                                <form action="/categories/<%= category._id %>/delete?_method=DELETE" method="POST" class="delete-form" onsubmit="return confirm('Bu kategoriyi silmek istediğinizden emin misiniz?')">
                                                     <button type="submit" class="btn btn-danger btn-sm">Sil</button>
                                                 </form>
                                             </td>
@@ -106,5 +84,8 @@ const helpers = require('../../utils/helpers');
                 </div>
             </div>
         </div>
-    `
-}) %>
+    </main>
+    <%- include('../../partials/footer') %>
+    <script src="/js/main.js"></script>
+</body>
+</html>

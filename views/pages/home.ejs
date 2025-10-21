@@ -1,10 +1,18 @@
-<%
-const layout = 'layouts/main';
-const helpers = require('../../utils/helpers');
-%>
-
-<%- include(layout, { 
-    body: `
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | <%= constants.APP_NAME %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <meta name="description" content="<%= constants.APP_NAME %> - En kaliteli ürünler en uygun fiyatlarla">
+    <meta name="keywords" content="ürün, katalog, alışveriş, elektronik, moda, spor">
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <%- include('../partials/navbar') %>
+    <main class="main-content">
         <!-- Hero Banner -->
         <section class="hero">
             <div class="container">
@@ -48,7 +56,7 @@ const helpers = require('../../utils/helpers');
                 
                 <div class="products-grid">
                     <% popularProducts.forEach(function(product) { %>
-                        <%- include('../partials/product-card', { product, helpers }) %>
+                        <%- include('../partials/product-card', { product }) %>
                     <% }); %>
                 </div>
             </div>
@@ -81,5 +89,8 @@ const helpers = require('../../utils/helpers');
                 </div>
             </div>
         </section>
-    `
-}) %>
+    </main>
+    <%- include('../partials/footer') %>
+    <script src="/js/main.js"></script>
+</body>
+</html>

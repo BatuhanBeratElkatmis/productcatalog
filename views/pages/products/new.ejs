@@ -1,9 +1,27 @@
-<%
-const layout = 'layouts/main';
-%>
-
-<%- include(layout, {
-    body: `
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | <%= constants.APP_NAME %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <meta name="description" content="<%= constants.APP_NAME %> - En kaliteli ürünler en uygun fiyatlarla">
+    <meta name="keywords" content="ürün, katalog, alışveriş, elektronik, moda, spor">
+</head>
+<body>
+    <%- include('../../partials/header') %>
+    <%- include('../../partials/navbar') %>
+    <main class="main-content">
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-error"><strong>Hata!</strong> <%= error %></div>
+        <% } %>
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+            <div class="alert alert-error">
+                <strong>Hatalar:</strong>
+                <ul><% errors.forEach(function(error) { %><li><%= error %></li><% }); %></ul>
+            </div>
+        <% } %>
         <div class="product-form-page">
             <div class="container">
                 <div class="page-header">
@@ -16,40 +34,17 @@ const layout = 'layouts/main';
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="name" class="form-label">Ürün Adı *</label>
-                                <input 
-                                    type="text" 
-                                    id="name" 
-                                    name="name" 
-                                    class="form-input" 
-                                    value="<%= product.name || '' %>"
-                                    required
-                                >
+                                <input type="text" id="name" name="name" class="form-input" value="<%= locals.product ? product.name : '' %>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="brand" class="form-label">Marka *</label>
-                                <input 
-                                    type="text" 
-                                    id="brand" 
-                                    name="brand" 
-                                    class="form-input" 
-                                    value="<%= product.brand || '' %>"
-                                    required
-                                >
+                                <input type="text" id="brand" name="brand" class="form-input" value="<%= locals.product ? product.brand : '' %>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="price" class="form-label">Fiyat (₺) *</label>
-                                <input 
-                                    type="number" 
-                                    id="price" 
-                                    name="price" 
-                                    class="form-input" 
-                                    step="0.01"
-                                    min="0"
-                                    value="<%= product.price || '' %>"
-                                    required
-                                >
+                                <input type="number" id="price" name="price" class="form-input" step="0.01" min="0" value="<%= locals.product ? product.price : '' %>" required>
                             </div>
 
                             <div class="form-group">
@@ -57,10 +52,7 @@ const layout = 'layouts/main';
                                 <select id="category" name="category" class="form-select" required>
                                     <option value="">Kategori Seçin</option>
                                     <% categories.forEach(function(category) { %>
-                                        <option 
-                                            value="<%= category._id %>"
-                                            <%= product.category === category._id ? 'selected' : '' %>
-                                        >
+                                        <option value="<%= category._id %>" <%= (locals.product && product.category === category._id) ? 'selected' : '' %>>
                                             <%= category.name %>
                                         </option>
                                     <% }); %>
@@ -69,62 +61,27 @@ const layout = 'layouts/main';
 
                             <div class="form-group">
                                 <label for="stock" class="form-label">Stok Miktarı *</label>
-                                <input 
-                                    type="number" 
-                                    id="stock" 
-                                    name="stock" 
-                                    class="form-input" 
-                                    min="0"
-                                    value="<%= product.stock || 0 %>"
-                                    required
-                                >
+                                <input type="number" id="stock" name="stock" class="form-input" min="0" value="<%= locals.product ? product.stock : 0 %>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="rating" class="form-label">Puan (0-5)</label>
-                                <input 
-                                    type="number" 
-                                    id="rating" 
-                                    name="rating" 
-                                    class="form-input" 
-                                    step="0.1"
-                                    min="0"
-                                    max="5"
-                                    value="<%= product.rating || 0 %>"
-                                >
+                                <input type="number" id="rating" name="rating" class="form-input" step="0.1" min="0" max="5" value="<%= locals.product ? product.rating : 0 %>">
                             </div>
 
                             <div class="form-group full-width">
                                 <label for="description" class="form-label">Açıklama *</label>
-                                <textarea 
-                                    id="description" 
-                                    name="description" 
-                                    class="form-textarea" 
-                                    rows="4"
-                                    required
-                                ><%= product.description || '' %></textarea>
+                                <textarea id="description" name="description" class="form-textarea" rows="4" required><%= locals.product ? product.description : '' %></textarea>
                             </div>
 
                             <div class="form-group full-width">
                                 <label for="images" class="form-label">Resim URL'leri (her satıra bir URL)</label>
-                                <textarea 
-                                    id="images" 
-                                    name="images" 
-                                    class="form-textarea" 
-                                    rows="3"
-                                    placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
-                                ><%= typeof product.images !== 'undefined' && Array.isArray(product.images) ? product.images.join('&#10;') : (product.images || '') %></textarea>
+                                <textarea id="images" name="images" class="form-textarea" rows="3" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"><%= (locals.product && product.images) ? (Array.isArray(product.images) ? product.images.join('\\n') : product.images) : '' %></textarea>
                             </div>
 
                             <div class="form-group full-width">
                                 <label for="features" class="form-label">Özellikler (her satıra bir özellik)</label>
-                                <textarea 
-                                    id="features" 
-                                    name="features" 
-                                    class="form-textarea" 
-                                    rows="3"
-                                    placeholder="Hızlı şarj&#10;Suya dayanıklı&#10;Kablosuz şarj"
-                                ><%= typeof product.features !== 'undefined' && Array.isArray(product.features) ? product.features.join('&#10;') : (product.features || '') %></textarea>
+                                <textarea id="features" name="features" class="form-textarea" rows="3" placeholder="Hızlı şarj&#10;Suya dayanıklı&#10;Kablosuz şarj"><%= (locals.product && product.features) ? (Array.isArray(product.features) ? product.features.join('\\n') : product.features) : '' %></textarea>
                             </div>
                         </div>
 
@@ -136,5 +93,8 @@ const layout = 'layouts/main';
                 </div>
             </div>
         </div>
-    `
-}) %>
+    </main>
+    <%- include('../../partials/footer') %>
+    <script src="/js/main.js"></script>
+</body>
+</html>
