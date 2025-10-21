@@ -1,5 +1,4 @@
 const Category = require('../models/Category');
-const Product = require('../models/Product');
 const { APP_CONSTANTS } = require('../config/constants');
 
 const categoryController = {
@@ -11,7 +10,9 @@ const categoryController = {
       // Her kategori için ürün sayısını getir
       const categoriesWithCounts = await Promise.all(
         categories.map(async (category) => {
-          const productCount = await Category.getProductCount(category._id);
+          // DÜZELTME: Fonksiyona category._id yerine category.slug gönderiliyor.
+          // Ürünler, kategorileri "slug" alanı üzerinden tanır.
+          const productCount = await Category.getProductCount(category.slug);
           return {
             ...category,
             productCount
@@ -38,12 +39,12 @@ const categoryController = {
     try {
       const { name, description } = req.body;
 
-      // Basit validasyon
       if (!name) {
+        // Hata durumunda da ürün sayılarını doğru hesapla
         const categories = await Category.getAll();
         const categoriesWithCounts = await Promise.all(
           categories.map(async (category) => {
-            const productCount = await Category.getProductCount(category._id);
+            const productCount = await Category.getProductCount(category.slug);
             return { ...category, productCount };
           })
         );
@@ -61,10 +62,11 @@ const categoryController = {
       res.redirect('/categories');
     } catch (error) {
       console.error('Kategori oluşturulurken hata:', error);
+      // Hata durumunda da ürün sayılarını doğru hesapla
       const categories = await Category.getAll();
       const categoriesWithCounts = await Promise.all(
         categories.map(async (category) => {
-          const productCount = await Category.getProductCount(category._id);
+          const productCount = await Category.getProductCount(category.slug);
           return { ...category, productCount };
         })
       );
@@ -78,19 +80,30 @@ const categoryController = {
     }
   },
 
-  // Kategori sil - GÜNCELLENDİ: DELETE methodu için
+  // Kategori sil
   deleteCategory: async (req, res) => {
     try {
       const { id } = req.params;
 
+      // Önce silinecek kategorinin bilgilerini (slug dahil) al
+      const categoryToDelete = await Category.getById(id);
+      if (!categoryToDelete) {
+          return res.status(404).render('pages/error', {
+              title: 'Kategori Bulunamadı',
+              message: 'Silmek istediğiniz kategori mevcut değil.'
+          });
+      }
+
       // Kategoriye ait ürün var mı kontrol et
-      const productCount = await Category.getProductCount(id);
+      // DÜZELTME: Fonksiyona ID yerine kategorinin slug'ı gönderiliyor.
+      const productCount = await Category.getProductCount(categoryToDelete.slug);
       
       if (productCount > 0) {
+        // Hata durumunda da ürün sayılarını doğru hesapla
         const categories = await Category.getAll();
         const categoriesWithCounts = await Promise.all(
           categories.map(async (category) => {
-            const count = await Category.getProductCount(category._id);
+            const count = await Category.getProductCount(category.slug);
             return { ...category, productCount: count };
           })
         );

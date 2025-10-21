@@ -1,4 +1,4 @@
-const { getCollection, findAll, findById, insertOne, updateOne, deleteOne } = require('../config/database');
+const { getCollection } = require('../config/database');
 const { ObjectId } = require('mongodb');
 
 const Category = {
@@ -16,6 +16,7 @@ const Category = {
   getById: async (id) => {
     try {
       const collection = getCollection('categories');
+      // Gelen string ID'yi ObjectId'ye çevirerek sorgula
       return await collection.findOne({ _id: new ObjectId(id) });
     } catch (error) {
       throw new Error(`Kategori getirilirken hata: ${error.message}`);
@@ -63,7 +64,7 @@ const Category = {
       };
 
       const result = await collection.updateOne(
-        { _id: new ObjectId(id) },
+        { _id: new ObjectId(id) }, // Gelen string ID'yi ObjectId'ye çevir
         { $set: updates }
       );
 
@@ -77,7 +78,7 @@ const Category = {
   delete: async (id) => {
     try {
       const collection = getCollection('categories');
-      const result = await collection.deleteOne({ _id: new ObjectId(id) });
+      const result = await collection.deleteOne({ _id: new ObjectId(id) }); // Gelen string ID'yi ObjectId'ye çevir
       return result.deletedCount;
     } catch (error) {
       throw new Error(`Kategori silinirken hata: ${error.message}`);
@@ -85,11 +86,14 @@ const Category = {
   },
 
   // Kategoriye ait ürün sayısını getir
-  getProductCount: async (categoryId) => {
+  getProductCount: async (categorySlug) => {
+    // ÖNEMLİ NOT: Bu fonksiyonun doğru çalışması için artık ID yerine 'slug' kullanması gerekiyor.
+    // Çünkü ürünler, kategorileri 'slug' (örn: "electronics") alanı üzerinden referans alıyor.
+    // Bu fonksiyonu çağıran 'categoryController.js' dosyasında 'category._id' yerine 'category.slug' gönderilmelidir.
     try {
       const productsCollection = getCollection('products');
       return await productsCollection.countDocuments({ 
-        category: categoryId 
+        category: categorySlug
       });
     } catch (error) {
       throw new Error(`Ürün sayısı getirilirken hata: ${error.message}`);
@@ -98,3 +102,4 @@ const Category = {
 };
 
 module.exports = Category;
+

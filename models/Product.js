@@ -1,4 +1,4 @@
-const { getCollection, findAll, findById, insertOne, updateOne, deleteOne } = require('../config/database');
+const { getCollection } = require('../config/database');
 const { ObjectId } = require('mongodb');
 
 const Product = {
@@ -95,6 +95,7 @@ const Product = {
   getById: async (id) => {
     try {
       const collection = getCollection('products');
+      // Gelen string ID'yi ObjectId'ye çevirerek sorgula
       return await collection.findOne({ _id: new ObjectId(id) });
     } catch (error) {
       throw new Error(`Ürün getirilirken hata: ${error.message}`);
@@ -136,7 +137,7 @@ const Product = {
       };
 
       const result = await collection.updateOne(
-        { _id: new ObjectId(id) },
+        { _id: new ObjectId(id) }, // Gelen string ID'yi ObjectId'ye çevir
         { $set: updates }
       );
 
@@ -150,7 +151,7 @@ const Product = {
   delete: async (id) => {
     try {
       const collection = getCollection('products');
-      const result = await collection.deleteOne({ _id: new ObjectId(id) });
+      const result = await collection.deleteOne({ _id: new ObjectId(id) }); // Gelen string ID'yi ObjectId'ye çevir
       return result.deletedCount;
     } catch (error) {
       throw new Error(`Ürün silinirken hata: ${error.message}`);
@@ -164,7 +165,7 @@ const Product = {
       return await collection
         .find({ 
           category: category,
-          _id: { $ne: new ObjectId(productId) }
+          _id: { $ne: new ObjectId(productId) } // Gelen string ID'yi ObjectId'ye çevir
         })
         .limit(limit)
         .toArray();
@@ -190,7 +191,7 @@ const Product = {
     }
   },
 
-  // MARKALARI GETİR - YENİ EKLENEN METHOD
+  // MARKALARI GETİR
   getBrands: async () => {
     try {
       const collection = getCollection('products');
@@ -203,3 +204,4 @@ const Product = {
 };
 
 module.exports = Product;
+

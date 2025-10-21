@@ -1,6 +1,5 @@
 [
   {
-    "_id": "electronics",
     "name": "Elektronik",
     "slug": "electronics",
     "description": "Akıllı telefonlar, bilgisayarlar, tabletler ve diğer elektronik cihazlar",
@@ -10,7 +9,6 @@
     "updatedAt": "2024-01-15T10:00:00.000Z"
   },
   {
-    "_id": "fashion",
     "name": "Moda",
     "slug": "fashion",
     "description": "Giyim, ayakkabı, aksesuar ve moda ürünleri",
@@ -20,7 +18,6 @@
     "updatedAt": "2024-01-15T10:00:00.000Z"
   },
   {
-    "_id": "home",
     "name": "Ev & Yaşam",
     "slug": "home",
     "description": "Mobilya, ev dekorasyonu, mutfak ve bahçe ürünleri",
@@ -30,7 +27,6 @@
     "updatedAt": "2024-01-15T10:00:00.000Z"
   },
   {
-    "_id": "sports",
     "name": "Spor & Outdoor",
     "slug": "sports",
     "description": "Spor ekipmanları, outdoor ürünleri ve fitness",
@@ -40,7 +36,6 @@
     "updatedAt": "2024-01-15T10:00:00.000Z"
   },
   {
-    "_id": "books",
     "name": "Kitaplar",
     "slug": "books",
     "description": "Romanlar, eğitim kitapları, dergiler ve daha fazlası",

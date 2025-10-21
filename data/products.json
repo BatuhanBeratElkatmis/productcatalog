@@ -1,6 +1,5 @@
 [
   {
-    "_id": "1",
     "name": "iPhone 15 Pro",
     "description": "Yeni A17 Pro çipli, titanyum tasarımlı en gelişmiş iPhone",
     "price": 74999,
@@ -24,7 +23,6 @@
     "updatedAt": "2024-01-20T09:00:00.000Z"
   },
   {
-    "_id": "2",
     "name": "Samsung Galaxy S24 Ultra",
     "description": "AI özellikli, S Pen destekli premium Android telefon",
     "price": 69999,
@@ -48,7 +46,6 @@
     "updatedAt": "2024-01-19T10:00:00.000Z"
   },
   {
-    "_id": "3",
     "name": "MacBook Air M3",
     "description": "M3 çipli, ince ve hafif tasarımlı güçlü laptop",
     "price": 52999,
@@ -72,7 +69,6 @@
     "updatedAt": "2024-01-18T11:00:00.000Z"
   },
   {
-    "_id": "4",
     "name": "Nike Air Max 270",
     "description": "Rahatlık ve stil bir arada, günlük kullanım için ideal spor ayakkabı",
     "price": 2899,
@@ -96,7 +92,6 @@
     "updatedAt": "2024-01-17T12:00:00.000Z"
   },
   {
-    "_id": "5",
     "name": "Adidas Ultraboost 22",
     "description": "Boost teknolojili, maksimum konfor sunan koşu ayakkabısı",
     "price": 3299,
@@ -120,7 +115,6 @@
     "updatedAt": "2024-01-16T13:00:00.000Z"
   },
   {
-    "_id": "6",
     "name": "IKEA MARKUS Ofis Koltuğu",
     "description": "Ergonomik tasarımlı, uzun süreli kullanım için ideal ofis koltuğu",
     "price": 1999,
@@ -144,7 +138,6 @@
     "updatedAt": "2024-01-15T14:00:00.000Z"
   },
   {
-    "_id": "7",
     "name": "Philips 65İnç 4K Android TV",
     "description": "Android TV özellikli, 4K çözünürlüklü akıllı televizyon",
     "price": 18999,
@@ -168,7 +161,6 @@
     "updatedAt": "2024-01-14T15:00:00.000Z"
   },
   {
-    "_id": "8",
     "name": "Zumba Fitness Seti",
     "description": "Evde spor için ideal, profesyonel zumba seti",
     "price": 899,
@@ -192,7 +184,6 @@
     "updatedAt": "2024-01-13T16:00:00.000Z"
   },
   {
-    "_id": "9",
     "name": "Süper Zengin Asyalı Baba",
     "description": "Kevin Kwan'ın en çok satan romanı",
     "price": 89,
@@ -216,7 +207,6 @@
     "updatedAt": "2024-01-12T17:00:00.000Z"
   },
   {
-    "_id": "10",
     "name": "Apple Watch Series 9",
     "description": "En gelişmiş Apple Watch, sağlık ve fitness takibi",
     "price": 15999,
