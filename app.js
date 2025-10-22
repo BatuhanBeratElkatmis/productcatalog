@@ -15,6 +15,9 @@ const { connectDB } = require('./config/database');
 // Helpers'ı içe aktar
 const helpers = require('./utils/helpers');
 
+// HATA 4 DÜZELTMESİ: Category modelini ana app'e dahil et
+const Category = require('./models/Category');
+
 // Middleware'ler
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
@@ -27,8 +30,21 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Helpers'ı ve sabitleri tüm template'lere aktar
 app.locals.helpers = helpers;
-// HATA DÜZELTMESİ: Değişken adı 'constants' olarak düzeltildi.
 app.locals.constants = require('./config/constants').APP_CONSTANTS;
+
+// HATA 4 DÜZELTMESİ (En İyi Yöntem): Global Middleware
+// Bu middleware, her istekte kategorileri çeker ve
+// 'res.locals' aracılığıyla tüm EJS temalarında 'categories' değişkenini kullanılabilir hale getirir.
+app.use(async (req, res, next) => {
+  try {
+    const categories = await Category.getAll();
+    res.locals.categories = categories;
+    next();
+  } catch (error) {
+    console.error("Global kategori middleware hatası:", error);
+    next(error); // Hata yönetimi middleware'ine yönlendir
+  }
+});
 
 // Routes
 app.use('/', require('./routes'));
@@ -60,6 +76,7 @@ const startServer = async () => {
 };
 
 startServer();
+
 
 
 

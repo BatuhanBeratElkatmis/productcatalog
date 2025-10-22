@@ -5,7 +5,8 @@ const categoryController = {
   // Kategori listesi sayfası
   getCategories: async (req, res) => {
     try {
-      const categories = await Category.getAll();
+      // HATA 4 DÜZELTMESİ: 'res.locals.categories' global değişkenden alınır.
+      const categories = res.locals.categories;
 
       // Her kategori için ürün sayısını getir
       const categoriesWithCounts = await Promise.all(
@@ -41,7 +42,8 @@ const categoryController = {
 
       if (!name) {
         // Hata durumunda da ürün sayılarını doğru hesapla
-        const categories = await Category.getAll();
+        // HATA 4 DÜZELTMESİ: 'res.locals.categories' global değişkenden alınır.
+        const categories = res.locals.categories;
         const categoriesWithCounts = await Promise.all(
           categories.map(async (category) => {
             const productCount = await Category.getProductCount(category.slug);
@@ -63,7 +65,8 @@ const categoryController = {
     } catch (error) {
       console.error('Kategori oluşturulurken hata:', error);
       // Hata durumunda da ürün sayılarını doğru hesapla
-      const categories = await Category.getAll();
+      // HATA 4 DÜZELTMESİ: 'res.locals.categories' global değişkenden alınır.
+      const categories = res.locals.categories;
       const categoriesWithCounts = await Promise.all(
         categories.map(async (category) => {
           const productCount = await Category.getProductCount(category.slug);
@@ -100,7 +103,8 @@ const categoryController = {
       
       if (productCount > 0) {
         // Hata durumunda da ürün sayılarını doğru hesapla
-        const categories = await Category.getAll();
+        // HATA 4 DÜZELTMESİ: 'res.locals.categories' global değişkenden alınır.
+        const categories = res.locals.categories;
         const categoriesWithCounts = await Promise.all(
           categories.map(async (category) => {
             const count = await Category.getProductCount(category.slug);

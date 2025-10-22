@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
-const Category = require('../models/Category');
+// HATA 4 DÜZELTMESİ: Kategori artık global middleware'den geldiği için burada gerek yok.
+// const Category = require('../models/Category');
 const { APP_CONSTANTS } = require('../config/constants');
 
 const homeController = {
@@ -13,13 +14,13 @@ const homeController = {
         { limit: 8 }
       );
 
-      // Tüm kategorileri getir
-      const categories = await Category.getAll();
+      // HATA 4 DÜZELTMESİ: Kategori verisi 'res.locals' aracılığıyla zaten mevcut.
+      // const categories = await Category.getAll();
 
       res.render('pages/home', {
         title: 'Ana Sayfa',
         popularProducts: popularProducts.products,
-        categories,
+        // categories, // Kaldırıldı
         constants: APP_CONSTANTS
       });
     } catch (error) {
@@ -33,6 +34,8 @@ const homeController = {
 
   // Hakkında sayfası
   getAboutPage: (req, res) => {
+    // HATA 4 DÜZELTMESİ: Kategori verisi 'res.locals' aracılığıyla zaten mevcut.
+    // Hiçbir değişiklik gerekmez.
     res.render('pages/about', {
       title: 'Hakkımızda',
       constants: APP_CONSTANTS
@@ -41,6 +44,8 @@ const homeController = {
 
   // İletişim sayfası
   getContactPage: (req, res) => {
+    // HATA 4 DÜZELTMESİ: Kategori verisi 'res.locals' aracılığıyla zaten mevcut.
+    // Hiçbir değişiklik gerekmez.
     res.render('pages/contact', {
       title: 'İletişim',
       constants: APP_CONSTANTS

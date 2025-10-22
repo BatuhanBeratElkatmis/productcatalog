@@ -23,17 +23,10 @@
             <span class="brand-text"><%= product.brand %></span>
         </div>
         
+        <!-- HATA 3 DÜZELTMESİ: EJS yıldız mantığı yerine helper fonksiyonu kullanıldı -->
         <div class="product-rating">
             <div class="stars">
-                <% for (let i = 1; i <= 5; i++) { %>
-                    <% if (i <= Math.floor(product.rating)) { %>
-                        <span class="star full">★</span>
-                    <% } else if (i === Math.ceil(product.rating) && product.rating % 1 !== 0) { %>
-                        <span class="star half">★</span>
-                    <% } else { %>
-                        <span class="star empty">★</span>
-                    <% } %>
-                <% } %>
+                <%- helpers.generateStarRating(product.rating) %>
             </div>
             <span class="rating-value">(<%= product.rating %>)</span>
         </div>

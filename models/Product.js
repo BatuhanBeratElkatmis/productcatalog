@@ -39,16 +39,23 @@ const Product = {
         query.stock = { $gt: 0 };
       }
 
-      // Marka filtresi
-      if (brand) {
-        query.brand = { $regex: brand, $options: 'i' };
-      }
-
-      // HATA DÜZELTİLDİ: Arama filtresi
+      // HATA 2 DÜZELTMESİ: Arama ve Marka filtresi (MongoDB Text Index kullanarak)
       // Yavaş olan $regex sorgusu yerine, performansı artırmak için
       // veritabanında oluşturulan text index'i kullanan $text operatörü eklendi.
       if (search) {
         query.$text = { $search: search };
+      }
+  
+      // Marka filtresi de $text index'i kullanmalı
+      if (brand) {
+        if (query.$text) {
+          // Zaten bir 'search' sorgusu varsa, markayı da ekle
+          // Markayı tırnak içinde ekleyerek tam kelime eşleşmesi (phrase search) sağlıyoruz.
+          query.$text.$search = query.$text.$search + ' "' + brand + '"';
+        } else {
+          // Sadece marka aranıyorsa, tırnak içinde ara
+          query.$text = { $search: '"' + brand + '"' };
+        }
       }
 
       // Sıralama
@@ -213,4 +220,3 @@ const Product = {
 };
 
 module.exports = Product;
-

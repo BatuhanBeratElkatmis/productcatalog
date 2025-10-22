@@ -5,7 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initFilters();
     initUI();
     initFormValidation();
-    initImageGallery();
+    
+    // HATA 6 DÜZELTMESİ: 'initImageGallery()' çağrısı kaldırıldı.
+    // 1. Fonksiyonun doğru adı 'initImageZoom' idi.
+    // 2. Bu fonksiyon zaten 'initUI()' içinde (ui.js dosyasında) çağrılıyordu.
+    // initImageGallery(); 
     
     console.log('🛒 Product Catalog initialized');
 });

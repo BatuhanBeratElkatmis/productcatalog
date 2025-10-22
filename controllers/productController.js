@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
-const Category = require('../models/Category');
+// HATA 4 DÜZELTMESİ: Kategori artık global middleware'den geldiği için burada gerek yok.
+// const Category = require('../models/Category');
 const { APP_CONSTANTS, SORT_OPTIONS } = require('../config/constants');
 
 const productController = {
@@ -42,17 +43,17 @@ const productController = {
       // Ürünleri getir
       const result = await Product.getAll(filters, sortOption, pagination);
       
-      // Kategorileri getir (filtreleme için)
-      const categories = await Category.getAll();
+      // HATA 4 DÜZELTMESİ: Kategori verisi 'res.locals' aracılığıyla zaten mevcut.
+      // const categories = await Category.getAll();
 
-      // MARKALARI GETİR - YENİ EKLENDİ
+      // MARKALARI GETİR
       const brands = await Product.getBrands();
 
       res.render('pages/products/list', {
         title: 'Ürünler',
         products: result.products,
         pagination: result.pagination,
-        categories,
+        // categories, // Kaldırıldı
         brands, // Markaları view'a geçir
         filters,
         sortOptions: SORT_OPTIONS,
@@ -85,9 +86,10 @@ const productController = {
 
       const result = await Product.getAll(filters, {}, pagination);
 
-      // MARKALARI GETİR - YENİ EKLENDİ
+      // MARKALARI GETİR
       const brands = await Product.getBrands();
-      const categories = await Category.getAll();
+      // HATA 4 DÜZELTMESİ: Kategori verisi 'res.locals' aracılığıyla zaten mevcut.
+      // const categories = await Category.getAll();
 
       res.render('pages/products/list', {
         title: `"${searchQuery}" Arama Sonuçları`,
@@ -96,7 +98,7 @@ const productController = {
         searchQuery,
         filters,
         brands, // Markaları view'a geçir
-        categories,
+        // categories, // Kaldırıldı
         constants: APP_CONSTANTS
       });
     } catch (error) {
@@ -130,6 +132,7 @@ const productController = {
         product,
         similarProducts,
         constants: APP_CONSTANTS
+        // Not: Bu sayfa navbar için 'res.locals.categories' kullanır
       });
     } catch (error) {
       console.error('Ürün detayı yüklenirken hata:', error);
@@ -143,11 +146,12 @@ const productController = {
   // Yeni ürün formu
   getNewProductForm: async (req, res) => {
     try {
-      const categories = await Category.getAll();
+      // HATA 4 DÜZELTMESİ: Kategori verisi 'res.locals' aracılığıyla zaten mevcut.
+      // const categories = await Category.getAll();
 
       res.render('pages/products/new', {
         title: 'Yeni Ürün Ekle',
-        categories,
+        // categories, // Kaldırıldı
         constants: APP_CONSTANTS,
         product: {} // Boş ürün objesi (form için)
       });
@@ -175,27 +179,19 @@ const productController = {
         productData.features = productData.features.split('\n').map(feature => feature.trim()).filter(feature => feature);
       }
 
-      // Basit validasyon
-      if (!productData.name || !productData.price) {
-        const categories = await Category.getAll();
-        return res.render('pages/products/new', {
-          title: 'Yeni Ürün Ekle',
-          categories,
-          constants: APP_CONSTANTS,
-          product: productData,
-          error: 'Ürün adı ve fiyat zorunludur.'
-        });
-      }
+      // HATA 5 DÜZELTMESİ: Gereksiz validasyon bloğu kaldırıldı.
+      // Bu işi 'validateProduct' middleware'i zaten yapıyor.
 
       const productId = await Product.create(productData);
 
       res.redirect(`/products/${productId}`);
     } catch (error) {
       console.error('Ürün oluşturulurken hata:', error);
-      const categories = await Category.getAll();
+      // HATA 4 DÜZELTMESİ: Kategori verisi 'res.locals' aracılığıyla zaten mevcut.
+      // const categories = await Category.getAll();
       res.status(500).render('pages/products/new', {
         title: 'Yeni Ürün Ekle',
-        categories,
+        // categories, // Kaldırıldı
         constants: APP_CONSTANTS,
         product: req.body,
         error: 'Ürün oluşturulurken bir hata oluştu.'
@@ -209,7 +205,8 @@ const productController = {
       const { id } = req.params;
 
       const product = await Product.getById(id);
-      const categories = await Category.getAll();
+      // HATA 4 DÜZELTMESİ: Kategori verisi 'res.locals' aracılığıyla zaten mevcut.
+      // const categories = await Category.getAll();
 
       if (!product) {
         return res.status(404).render('pages/error', {
@@ -221,7 +218,7 @@ const productController = {
       res.render('pages/products/edit', {
         title: 'Ürünü Düzenle',
         product,
-        categories,
+        // categories, // Kaldırıldı
         constants: APP_CONSTANTS
       });
     } catch (error) {
@@ -249,18 +246,8 @@ const productController = {
         updateData.features = updateData.features.split('\n').map(feature => feature.trim()).filter(feature => feature);
       }
 
-      // Basit validasyon
-      if (!updateData.name || !updateData.price) {
-        const product = await Product.getById(id);
-        const categories = await Category.getAll();
-        return res.render('pages/products/edit', {
-          title: 'Ürünü Düzenle',
-          product: { ...product, ...updateData },
-          categories,
-          constants: APP_CONSTANTS,
-          error: 'Ürün adı ve fiyat zorunludur.'
-        });
-      }
+      // HATA 5 DÜZELTMESİ: Gereksiz validasyon bloğu kaldırıldı.
+      // Bu işi 'validateProduct' middleware'i zaten yapıyor.
 
       const updatedCount = await Product.update(id, updateData);
 
@@ -307,3 +294,4 @@ const productController = {
 };
 
 module.exports = productController;
+

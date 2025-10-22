@@ -30,18 +30,16 @@
                 <div class="dropdown-menu">
                     <a href="/categories" class="dropdown-item">Tüm Kategoriler</a>
                     <div class="dropdown-divider"></div>
-                    <% if (typeof categories !== 'undefined') { %>
+                    
+                    <!-- HATA 4 DÜZELTMESİ: 'categories' artık global olduğu için 'else' bloğu kaldırıldı -->
+                    <!-- 'if' kontrolü, kategorilerin boş olmaması durumuna karşı koruma sağlar -->
+                    <% if (categories && categories.length > 0) { %>
                         <% categories.forEach(function(category) { %>
+                            <!-- HATA 1 DÜZELTMESİ: Linkler category.slug kullanır -->
                             <a href="/products?category=<%= category.slug %>" class="dropdown-item">
                                 <%= category.name %>
                             </a>
                         <% }); %>
-                    <% } else { %>
-                        <a href="/products?category=electronics" class="dropdown-item">Elektronik</a>
-                        <a href="/products?category=fashion" class="dropdown-item">Moda</a>
-                        <a href="/products?category=home" class="dropdown-item">Ev & Yaşam</a>
-                        <a href="/products?category=sports" class="dropdown-item">Spor</a>
-                        <a href="/products?category=books" class="dropdown-item">Kitaplar</a>
                     <% } %>
                 </div>
             </li>
@@ -62,3 +60,4 @@
         </ul>
     </div>
 </nav>
+
