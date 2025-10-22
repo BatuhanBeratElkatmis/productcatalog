@@ -17,8 +17,8 @@
             </a>
             <% categories.forEach(function(category) { %>
                 <a 
-                    href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, category: category._id }, 1) %>" 
-                    class="filter-option <%= filters.category === category._id ? 'active' : '' %>"
+                    href="/products?<%= helpers.buildPaginationUrl('/products', { ...filters, category: category.slug }, 1) %>" 
+                    class="filter-option <%= filters.category === category.slug ? 'active' : '' %>"
                 >
                     <%= category.name %>
                 </a>

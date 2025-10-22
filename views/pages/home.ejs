@@ -30,13 +30,13 @@
                 <h2 class="section-title">Popüler Kategoriler</h2>
                 <div class="categories-grid">
                     <% categories.forEach(function(category) { %>
-                        <a href="/products?category=<%= category._id %>" class="category-card">
+                        <a href="/products?category=<%= category.slug %>" class="category-card">
                             <div class="category-icon">
-                                <% if (category._id === 'electronics') { %>📱<% } %>
-                                <% if (category._id === 'fashion') { %>👕<% } %>
-                                <% if (category._id === 'home') { %>🏠<% } %>
-                                <% if (category._id === 'sports') { %>⚽<% } %>
-                                <% if (category._id === 'books') { %>📚<% } %>
+                                <% if (category.slug === 'electronics') { %>📱<% } %>
+                                <% if (category.slug === 'fashion') { %>👕<% } %>
+                                <% if (category.slug === 'home') { %>🏠<% } %>
+                                <% if (category.slug === 'sports') { %>⚽<% } %>
+                                <% if (category.slug === 'books') { %>📚<% } %>
                             </div>
                             <h3 class="category-name"><%= category.name %></h3>
                             <p class="category-description"><%= category.description %></p>

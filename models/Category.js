@@ -15,8 +15,11 @@ const Category = {
   // ID'ye göre kategori getir
   getById: async (id) => {
     try {
+      // HATA DÜZELTİLDİ: ObjectId formatı kontrolü eklendi.
+      if (!ObjectId.isValid(id)) {
+        return null; // Geçersiz formatta ID gelirse null döndür.
+      }
       const collection = getCollection('categories');
-      // Gelen string ID'yi ObjectId'ye çevirerek sorgula
       return await collection.findOne({ _id: new ObjectId(id) });
     } catch (error) {
       throw new Error(`Kategori getirilirken hata: ${error.message}`);
@@ -55,6 +58,10 @@ const Category = {
   // Kategori güncelle
   update: async (id, updateData) => {
     try {
+      // HATA DÜZELTİLDİ: ObjectId formatı kontrolü eklendi.
+      if (!ObjectId.isValid(id)) {
+        return 0; // Geçersiz formatta ID gelirse 0 döndür.
+      }
       const collection = getCollection('categories');
       
       const updates = {
@@ -64,7 +71,7 @@ const Category = {
       };
 
       const result = await collection.updateOne(
-        { _id: new ObjectId(id) }, // Gelen string ID'yi ObjectId'ye çevir
+        { _id: new ObjectId(id) },
         { $set: updates }
       );
 
@@ -77,8 +84,12 @@ const Category = {
   // Kategori sil
   delete: async (id) => {
     try {
+      // HATA DÜZELTİLDİ: ObjectId formatı kontrolü eklendi.
+      if (!ObjectId.isValid(id)) {
+        return 0; // Geçersiz formatta ID gelirse 0 döndür.
+      }
       const collection = getCollection('categories');
-      const result = await collection.deleteOne({ _id: new ObjectId(id) }); // Gelen string ID'yi ObjectId'ye çevir
+      const result = await collection.deleteOne({ _id: new ObjectId(id) });
       return result.deletedCount;
     } catch (error) {
       throw new Error(`Kategori silinirken hata: ${error.message}`);
@@ -87,9 +98,6 @@ const Category = {
 
   // Kategoriye ait ürün sayısını getir
   getProductCount: async (categorySlug) => {
-    // ÖNEMLİ NOT: Bu fonksiyonun doğru çalışması için artık ID yerine 'slug' kullanması gerekiyor.
-    // Çünkü ürünler, kategorileri 'slug' (örn: "electronics") alanı üzerinden referans alıyor.
-    // Bu fonksiyonu çağıran 'categoryController.js' dosyasında 'category._id' yerine 'category.slug' gönderilmelidir.
     try {
       const productsCollection = getCollection('products');
       return await productsCollection.countDocuments({ 
@@ -102,4 +110,3 @@ const Category = {
 };
 
 module.exports = Category;
-

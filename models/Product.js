@@ -44,13 +44,11 @@ const Product = {
         query.brand = { $regex: brand, $options: 'i' };
       }
 
-      // Arama filtresi
+      // HATA DÜZELTİLDİ: Arama filtresi
+      // Yavaş olan $regex sorgusu yerine, performansı artırmak için
+      // veritabanında oluşturulan text index'i kullanan $text operatörü eklendi.
       if (search) {
-        query.$or = [
-          { name: { $regex: search, $options: 'i' } },
-          { description: { $regex: search, $options: 'i' } },
-          { brand: { $regex: search, $options: 'i' } }
-        ];
+        query.$text = { $search: search };
       }
 
       // Sıralama
@@ -94,8 +92,10 @@ const Product = {
   // ID'ye göre ürün getir
   getById: async (id) => {
     try {
+      if (!ObjectId.isValid(id)) {
+        return null;
+      }
       const collection = getCollection('products');
-      // Gelen string ID'yi ObjectId'ye çevirerek sorgula
       return await collection.findOne({ _id: new ObjectId(id) });
     } catch (error) {
       throw new Error(`Ürün getirilirken hata: ${error.message}`);
@@ -126,6 +126,9 @@ const Product = {
   // Ürün güncelle
   update: async (id, updateData) => {
     try {
+      if (!ObjectId.isValid(id)) {
+        return 0;
+      }
       const collection = getCollection('products');
       
       const updates = {
@@ -137,7 +140,7 @@ const Product = {
       };
 
       const result = await collection.updateOne(
-        { _id: new ObjectId(id) }, // Gelen string ID'yi ObjectId'ye çevir
+        { _id: new ObjectId(id) },
         { $set: updates }
       );
 
@@ -150,8 +153,11 @@ const Product = {
   // Ürün sil
   delete: async (id) => {
     try {
+      if (!ObjectId.isValid(id)) {
+        return 0;
+      }
       const collection = getCollection('products');
-      const result = await collection.deleteOne({ _id: new ObjectId(id) }); // Gelen string ID'yi ObjectId'ye çevir
+      const result = await collection.deleteOne({ _id: new ObjectId(id) });
       return result.deletedCount;
     } catch (error) {
       throw new Error(`Ürün silinirken hata: ${error.message}`);
@@ -161,11 +167,14 @@ const Product = {
   // Benzer ürünleri getir
   getSimilar: async (productId, category, limit = 4) => {
     try {
+      if (!ObjectId.isValid(productId)) {
+        return [];
+      }
       const collection = getCollection('products');
       return await collection
         .find({ 
           category: category,
-          _id: { $ne: new ObjectId(productId) } // Gelen string ID'yi ObjectId'ye çevir
+          _id: { $ne: new ObjectId(productId) }
         })
         .limit(limit)
         .toArray();

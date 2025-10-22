@@ -31,7 +31,7 @@
                             "<%= searchQuery %>" Arama Sonuçları
                         <% } else if (filters.category && filters.category !== 'all') { %>
                             <% 
-                                const category = categories.find(cat => cat._id === filters.category);
+                                const category = categories.find(cat => cat.slug === filters.category);
                                 const categoryName = category ? category.name : filters.category;
                             %>
                             <%= categoryName %> Ürünleri

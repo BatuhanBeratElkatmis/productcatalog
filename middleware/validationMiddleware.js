@@ -4,10 +4,7 @@ const Product = require('../models/Product');
 
 // Ürün validasyon middleware'i
 const validateProduct = async (req, res, next) => {
-  const { name, price, category, stock } = req.body;
-  const errors = [];
-
-  // İsim validasyonu
+  // ... existing code ...
   if (!name || name.trim().length < 2) {
     errors.push('Ürün adı en az 2 karakter olmalıdır');
   }
@@ -93,7 +90,9 @@ const validateCategory = async (req, res, next) => {
       // Her kategori için ürün sayısını getir
       const categoriesWithCounts = await Promise.all(
         categories.map(async (category) => {
-          const productCount = await Category.getProductCount(category._id);
+          // HATA DÜZELTİLDİ:
+          // Ürün sayısını almak için `category._id` yerine `category.slug` gönderiliyor.
+          const productCount = await Category.getProductCount(category.slug);
           return {
             ...category,
             productCount
@@ -121,8 +120,7 @@ const validateCategory = async (req, res, next) => {
 
 // Arama query validasyonu
 const validateSearchQuery = (req, res, next) => {
-  const { q } = req.query;
-
+  // ... existing code ...
   if (q && q.length < 2) {
     return res.status(400).render('pages/products/list', {
       title: 'Arama Sonuçları',

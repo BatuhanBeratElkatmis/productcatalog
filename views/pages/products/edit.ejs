@@ -52,7 +52,7 @@
                                 <select id="category" name="category" class="form-select" required>
                                     <option value="">Kategori Seçin</option>
                                     <% categories.forEach(function(cat) { %>
-                                        <option value="<%= cat._id %>" <%= product.category === cat._id ? 'selected' : '' %>>
+                                        <option value="<%= cat.slug %>" <%= product.category === cat.slug ? 'selected' : '' %>>
                                             <%= cat.name %>
                                         </option>
                                     <% }); %>

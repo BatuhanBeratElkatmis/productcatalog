@@ -32,7 +32,7 @@
                     <div class="dropdown-divider"></div>
                     <% if (typeof categories !== 'undefined') { %>
                         <% categories.forEach(function(category) { %>
-                            <a href="/products?category=<%= category._id %>" class="dropdown-item">
+                            <a href="/products?category=<%= category.slug %>" class="dropdown-item">
                                 <%= category.name %>
                             </a>
                         <% }); %>

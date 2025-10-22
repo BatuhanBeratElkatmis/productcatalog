@@ -26,35 +26,36 @@
             <div class="container">
                 <div class="page-header">
                     <h1 class="page-title">Kategori Yönetimi</h1>
-                    <p class="page-subtitle">Sistemdeki kategorileri yönetin ve yeni kategoriler ekleyin</p>
+                    <p class="page-subtitle">Yeni kategoriler ekleyin veya mevcut olanları yönetin</p>
                 </div>
 
-                <!-- Add Category Form -->
-                <div class="add-category-section">
-                    <h2 class="section-title" style="text-align: left; margin-bottom: 1rem;">Yeni Kategori Ekle</h2>
-                    <form action="/categories" method="POST" class="category-form">
-                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr; align-items: flex-end;">
+                <div class="categories-layout">
+                    <!-- New Category Form -->
+                    <div class="category-form-container">
+                        <h2 class="section-title">Yeni Kategori Ekle</h2>
+                        <form action="/categories" method="POST" class="form category-form">
                             <div class="form-group">
                                 <label for="name" class="form-label">Kategori Adı *</label>
-                                <input type="text" id="name" name="name" class="form-input" placeholder="Örn: Elektronik" required>
+                                <input type="text" id="name" name="name" class="form-input" required>
                             </div>
                             <div class="form-group">
                                 <label for="description" class="form-label">Açıklama</label>
-                                <input type="text" id="description" name="description" class="form-input" placeholder="Kısa bir açıklama">
+                                <textarea id="description" name="description" class="form-textarea" rows="3"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Ekle</button>
-                        </div>
-                    </form>
-                </div>
+                            <button type="submit" class="btn btn-primary">Yeni Kategori Ekle</button>
+                        </form>
+                    </div>
 
-                <!-- Categories List -->
-                <div class="categories-section">
-                    <h2 class="section-title" style="text-align: left; margin-bottom: 1rem;">Mevcut Kategoriler</h2>
+                    <!-- Category List -->
                     <% if (categories.length === 0) { %>
-                        <p>Henüz hiç kategori eklenmemiş.</p>
+                        <div class="empty-state">
+                            <h3 class="empty-title">Kategori Bulunamadı</h3>
+                            <p class="empty-description">Henüz hiç kategori eklenmemiş.</p>
+                        </div>
                     <% } else { %>
-                        <div class="table-container">
-                            <table class="categories-table">
+                        <div class="category-list-container">
+                            <h2 class="section-title">Mevcut Kategoriler (<%= categories.length %>)</h2>
+                            <table class="data-table">
                                 <thead>
                                     <tr>
                                         <th>Kategori Adı</th>
@@ -70,7 +71,7 @@
                                             <td class="category-description"><%= category.description %></td>
                                             <td><span class="count-badge"><%= category.productCount %> ürün</span></td>
                                             <td class="category-actions">
-                                                <a href="/products?category=<%= category._id %>" class="btn btn-secondary btn-sm">Ürünleri Gör</a>
+                                                <a href="/products?category=<%= category.slug %>" class="btn btn-secondary btn-sm">Ürünleri Gör</a>
                                                 <form action="/categories/<%= category._id %>/delete?_method=DELETE" method="POST" class="delete-form" onsubmit="return confirm('Bu kategoriyi silmek istediğinizden emin misiniz?')">
                                                     <button type="submit" class="btn btn-danger btn-sm">Sil</button>
                                                 </form>
