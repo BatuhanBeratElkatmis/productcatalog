@@ -1,23 +1,27 @@
 // Main JavaScript file - Product Catalog Application
 
+// HATA 4 DÜZELTMESİ: Modülleri import et
+import { initUI } from './modules/ui.js';
+import { initFilters } from './modules/filters.js';
+import { initFormValidation } from './modules/form-validation.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all modules
-    initFilters();
     initUI();
+    initFilters();
     initFormValidation();
-    
-    // HATA 6 DÜZELTMESİ: 'initImageGallery()' çağrısı kaldırıldı.
-    // 1. Fonksiyonun doğru adı 'initImageZoom' idi.
-    // 2. Bu fonksiyon zaten 'initUI()' içinde (ui.js dosyasında) çağrılıyordu.
-    // initImageGallery(); 
-    
-    console.log('🛒 Product Catalog initialized');
+
+    console.log('🛒 Product Catalog initialized (using modules)');
 });
 
-// Global utility functions
+// Global utility functions (can remain here or move to a separate utility module)
 const ProductCatalog = {
     // Format price with Turkish Lira symbol
     formatPrice: (price) => {
+        // Handle potential non-numeric input gracefully
+        if (price === null || price === undefined || isNaN(price)) {
+            return 'N/A'; // Or some other placeholder
+        }
         return new Intl.NumberFormat('tr-TR', {
             style: 'currency',
             currency: 'TRY'
@@ -26,26 +30,33 @@ const ProductCatalog = {
 
     // Generate star rating HTML
     generateStarRating: (rating) => {
-        const fullStars = Math.floor(rating);
-        const halfStar = rating % 1 >= 0.5;
+         // Ensure rating is a number between 0 and 5
+         const numRating = parseFloat(rating);
+         if (isNaN(numRating) || numRating < 0 || numRating > 5) {
+             // Return empty stars or a placeholder if rating is invalid
+             return Array(5).fill('<span class="star empty">☆</span>').join(''); // Use empty star symbol
+         }
+
+        const fullStars = Math.floor(numRating);
+        const halfStar = numRating % 1 >= 0.45; // Adjust threshold slightly if needed
         const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 
         let stars = '';
-        
-        // Full stars
-        for (let i = 0; i < fullStars; i++) {
-            stars += '<span class="star full">★</span>';
-        }
-        
-        // Half star
+
+        // Full stars (use filled star symbol)
+        stars += Array(fullStars).fill('<span class="star full">★</span>').join('');
+
+        // Half star (use specific symbol or SVG for better visuals if available)
         if (halfStar) {
+            // Simple text-based half star - consider CSS or SVG for better rendering
             stars += '<span class="star half">★</span>';
+            // Example using SVG (requires adding SVG definition or library):
+            // stars += '<span class="star half"><svg>...</svg></span>';
         }
-        
-        // Empty stars
-        for (let i = 0; i < emptyStars; i++) {
-            stars += '<span class="star empty">★</span>';
-        }
+
+        // Empty stars (use empty star symbol)
+        stars += Array(emptyStars).fill('<span class="star empty">☆</span>').join('');
+
 
         return stars;
     },
@@ -56,84 +67,84 @@ const ProductCatalog = {
         return function executedFunction(...args) {
             const later = () => {
                 clearTimeout(timeout);
-                func(...args);
+                func.apply(this, args); // Use apply to preserve context
             };
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
     },
 
-    // Show notification
+    // Show notification (Can be improved with dedicated library or framework component later)
     showNotification: (message, type = 'info') => {
+        // Basic implementation - consider replacing with a more robust solution
+        console.log(`Notification (${type}): ${message}`); // Simple console log for now
+
+        const notificationArea = document.getElementById('notification-area') || createNotificationArea();
         const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
+        notification.className = `alert alert-${type === 'error' ? 'danger' : type}`; // Map to existing alert styles
+        notification.setAttribute('role', 'alert');
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px; /* Adjust as needed */
+            right: 20px;
+            z-index: 1050; /* Ensure it's above most elements */
+            min-width: 250px;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        `;
         notification.innerHTML = `
-            <div class="notification-content">
-                <span class="notification-message">${message}</span>
-                <button class="notification-close">&times;</button>
-            </div>
+            ${message}
+            <button type="button" class="btn-close" aria-label="Kapat" style="float: right; background: none; border: none; font-size: 1.2rem; line-height: 1; opacity: 0.7;">&times;</button>
         `;
 
-        // Add styles if not already added
-        if (!document.querySelector('#notification-styles')) {
-            const styles = document.createElement('style');
-            styles.id = 'notification-styles';
-            styles.textContent = `
-                .notification {
-                    position: fixed;
-                    top: 100px;
-                    right: 20px;
-                    z-index: 10000;
-                    min-width: 300px;
-                    max-width: 500px;
-                    background: white;
-                    border-radius: 8px;
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-                    border-left: 4px solid #3b82f6;
-                    transform: translateX(400px);
-                    transition: transform 0.3s ease;
-                }
-                .notification-success { border-left-color: #10b981; }
-                .notification-error { border-left-color: #ef4444; }
-                .notification-warning { border-left-color: #f59e0b; }
-                .notification.show { transform: translateX(0); }
-                .notification-content {
-                    padding: 16px;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-                .notification-close {
-                    background: none;
-                    border: none;
-                    font-size: 20px;
-                    cursor: pointer;
-                    color: #64748b;
-                }
-            `;
-            document.head.appendChild(styles);
-        }
+        notificationArea.appendChild(notification);
 
-        document.body.appendChild(notification);
+        // Animate in
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 100); // Short delay to allow CSS transition
 
-        // Show notification
-        setTimeout(() => notification.classList.add('show'), 100);
+        const closeButton = notification.querySelector('.btn-close');
+        const removeNotification = () => {
+             notification.style.opacity = '0';
+             notification.style.transform = 'translateX(100%)';
+             setTimeout(() => {
+                 if (notification.parentNode) {
+                     notification.remove();
+                 }
+                 // Remove area if empty? Optional.
+                 // if (notificationArea.children.length === 0) notificationArea.remove();
+             }, 300); // Match transition duration
+        };
 
-        // Close button event
-        notification.querySelector('.notification-close').addEventListener('click', () => {
-            notification.classList.remove('show');
-            setTimeout(() => notification.remove(), 300);
-        });
+        closeButton.addEventListener('click', removeNotification);
 
         // Auto remove after 5 seconds
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            }
-        }, 5000);
+        setTimeout(removeNotification, 5000);
     }
 };
 
-// Make utility functions globally available
+function createNotificationArea() {
+    const area = document.createElement('div');
+    area.id = 'notification-area';
+    area.style.cssText = `
+        position: fixed;
+        top: 80px; /* Below header */
+        right: 20px;
+        z-index: 1045; /* Below modals */
+        width: auto;
+        max-width: 400px; /* Limit width */
+    `;
+    document.body.appendChild(area);
+    return area;
+}
+
+
+// Make utility functions globally available (still useful for EJS helpers)
+// Keep this if helpers.js or EJS templates rely on `ProductCatalog.formatPrice` etc.
+// If moving fully to modules, these might be imported where needed instead.
 window.ProductCatalog = ProductCatalog;

@@ -106,6 +106,42 @@ const Category = {
     } catch (error) {
       throw new Error(`Ürün sayısı getirilirken hata: ${error.message}`);
     }
+  },
+
+  // HATA 1 DÜZELTMESİ: Ürün sayılarıyla birlikte tüm kategorileri getirmek için aggregation
+  getAllWithProductCounts: async () => {
+    try {
+      const collection = getCollection('categories');
+      return await collection.aggregate([
+        {
+          // Kategorileri 'slug' alanı üzerinden Ürünlerin 'category' alanı ile birleştir
+          $lookup: {
+            from: 'products',
+            localField: 'slug',
+            foreignField: 'category',
+            as: 'products'
+          }
+        },
+        {
+          // Her kategori için ürün sayısını hesapla
+          $addFields: {
+            productCount: { $size: '$products' }
+          }
+        },
+        {
+          // Gereksiz 'products' dizisini sonuçtan kaldır
+          $project: {
+            products: 0 
+          }
+        },
+        {
+          // İsim sırasına göre diz
+          $sort: { name: 1 }
+        }
+      ]).toArray();
+    } catch (error) {
+      throw new Error(`Kategoriler ve ürün sayıları getirilirken hata: ${error.message}`);
+    }
   }
 };
 

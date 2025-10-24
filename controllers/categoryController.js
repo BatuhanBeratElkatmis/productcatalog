@@ -5,21 +5,10 @@ const categoryController = {
   // Kategori listesi sayfası
   getCategories: async (req, res) => {
     try {
-      // HATA 4 DÜZELTMESİ: 'res.locals.categories' global değişkenden alınır.
-      const categories = res.locals.categories;
-
-      // Her kategori için ürün sayısını getir
-      const categoriesWithCounts = await Promise.all(
-        categories.map(async (category) => {
-          // DÜZELTME: Fonksiyona category._id yerine category.slug gönderiliyor.
-          // Ürünler, kategorileri "slug" alanı üzerinden tanır.
-          const productCount = await Category.getProductCount(category.slug);
-          return {
-            ...category,
-            productCount
-          };
-        })
-      );
+      // HATA 1 DÜZELTMESİ: N+1 sorgu problemi düzeltildi.
+      // Artık 'res.locals.categories' kullanmak yerine,
+      // ürün sayılarını tek bir aggregation sorgusuyla getiren yeni fonksiyonu çağırıyoruz.
+      const categoriesWithCounts = await Category.getAllWithProductCounts();
 
       res.render('pages/categories/list', {
         title: 'Kategoriler',
@@ -41,15 +30,8 @@ const categoryController = {
       const { name, description } = req.body;
 
       if (!name) {
-        // Hata durumunda da ürün sayılarını doğru hesapla
-        // HATA 4 DÜZELTMESİ: 'res.locals.categories' global değişkenden alınır.
-        const categories = res.locals.categories;
-        const categoriesWithCounts = await Promise.all(
-          categories.map(async (category) => {
-            const productCount = await Category.getProductCount(category.slug);
-            return { ...category, productCount };
-          })
-        );
+        // HATA 1 DÜZELTMESİ: Hata durumunda da N+1 sorgu problemi düzeltildi.
+        const categoriesWithCounts = await Category.getAllWithProductCounts();
 
         return res.render('pages/categories/list', {
           title: 'Kategoriler',
@@ -64,15 +46,8 @@ const categoryController = {
       res.redirect('/categories');
     } catch (error) {
       console.error('Kategori oluşturulurken hata:', error);
-      // Hata durumunda da ürün sayılarını doğru hesapla
-      // HATA 4 DÜZELTMESİ: 'res.locals.categories' global değişkenden alınır.
-      const categories = res.locals.categories;
-      const categoriesWithCounts = await Promise.all(
-        categories.map(async (category) => {
-          const productCount = await Category.getProductCount(category.slug);
-          return { ...category, productCount };
-        })
-      );
+      // HATA 1 DÜZELTMESİ: Hata durumunda da N+1 sorgu problemi düzeltildi.
+      const categoriesWithCounts = await Category.getAllWithProductCounts();
 
       res.status(500).render('pages/categories/list', {
         title: 'Kategoriler',
@@ -102,15 +77,8 @@ const categoryController = {
       const productCount = await Category.getProductCount(categoryToDelete.slug);
       
       if (productCount > 0) {
-        // Hata durumunda da ürün sayılarını doğru hesapla
-        // HATA 4 DÜZELTMESİ: 'res.locals.categories' global değişkenden alınır.
-        const categories = res.locals.categories;
-        const categoriesWithCounts = await Promise.all(
-          categories.map(async (category) => {
-            const count = await Category.getProductCount(category.slug);
-            return { ...category, productCount: count };
-          })
-        );
+        // HATA 1 DÜZELTMESİ: Hata durumunda da N+1 sorgu problemi düzeltildi.
+        const categoriesWithCounts = await Category.getAllWithProductCounts();
 
         return res.render('pages/categories/list', {
           title: 'Kategoriler',
