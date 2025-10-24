@@ -72,8 +72,14 @@
                                             <td><span class="count-badge"><%= category.productCount %> ürün</span></td>
                                             <td class="category-actions">
                                                 <a href="/products?category=<%= category.slug %>" class="btn btn-secondary btn-sm">Ürünleri Gör</a>
-                                                <form action="/categories/<%= category._id %>/delete?_method=DELETE" method="POST" class="delete-form" onsubmit="return confirm('Bu kategoriyi silmek istediğinizden emin misiniz?')">
-                                                    <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                                                
+                                                <!-- HATA 1 DÜZELTMESİ: confirm() kaldırıldı, modal tetikleyici eklendi -->
+                                                <form id="delete-category-form-<%= category._id %>" action="/categories/<%= category._id %>/delete?_method=DELETE" method="POST" class="delete-form">
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                            data-modal-toggle="deleteCategoryModal-<%= category._id %>"
+                                                            data-modal-form-target="#delete-category-form-<%= category._id %>">
+                                                        Sil
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -86,6 +92,17 @@
             </div>
         </div>
     </main>
+
+    <!-- HATA 1 DÜZELTMESİ: Kategoriler için dinamik modallar eklendi -->
+    <% categories.forEach(function(category) { %>
+        <%- include('../../partials/modal', { 
+            modalId: `deleteCategoryModal-${category._id}`, 
+            modalTitle: 'Kategoriyi Sil', 
+            modalMessage: `"${category.name}" kategorisini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`,
+            modalConfirmBtnText: 'Evet, Sil'
+        }) %>
+    <% }); %>
+
     <%- include('../../partials/footer') %>
     <script src="/js/main.js"></script>
 </body>

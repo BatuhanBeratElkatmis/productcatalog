@@ -92,8 +92,14 @@
                             <a href="/products/<%= product._id %>/edit" class="btn btn-primary">
                                 Ürünü Düzenle
                             </a>
-                            <form action="/products/<%= product._id %>/delete?_method=DELETE" method="POST" class="delete-form">
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Bu ürünü silmek istediğinizden emin misiniz?')">Ürünü Sil</button>
+                            
+                            <!-- HATA 1 DÜZELTMESİ: confirm() kaldırıldı, modal tetikleyici eklendi -->
+                            <form id="delete-product-form" action="/products/<%= product._id %>/delete?_method=DELETE" method="POST" class="delete-form">
+                                <button type="button" class="btn btn-danger" 
+                                        data-modal-toggle="deleteProductModal"
+                                        data-modal-form-target="#delete-product-form">
+                                    Ürünü Sil
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -113,6 +119,15 @@
             </div>
         </div>
     </main>
+
+    <!-- HATA 1 DÜZELTMESİ: Silme modalı eklendi -->
+    <%- include('../../partials/modal', { 
+        modalId: 'deleteProductModal', 
+        modalTitle: 'Ürünü Sil', 
+        modalMessage: 'Bu ürünü silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
+        modalConfirmBtnText: 'Evet, Sil'
+    }) %>
+
     <%- include('../../partials/footer') %>
     <script src="/js/main.js"></script>
 </body>
